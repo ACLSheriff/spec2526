@@ -1,0 +1,30 @@
+body {
+    background-color: black;
+}
+
+h1 {
+    color: white;
+    text-align: center;
+    font-size: large;
+}
+
+p, input {
+    color: white;
+    font-size: medium;
+}
+
+#mns {
+    width: 100px;
+}
+
+form {
+    background-color: dimgrey;
+    border-radius: 8px;
+    margin: auto;
+}
+
+input[type="submit"] {
+    background-color: darkolivegreen;
+    color: wheat;
+
+}

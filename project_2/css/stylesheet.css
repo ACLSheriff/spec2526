@@ -1,0 +1,40 @@
+nav ul {
+    list-style-type: none; /*removed buleit points*/
+    margin: 0; /* removed any defult margins  */
+    padding: 0; /* removes any defult padding*/
+    display: flex; /* makes it stacks across*/
+    justify-content: flex-start; /* stacks across*/
+    background-color: lightskyblue; /*background colour of the page */
+}
+
+nav li:hover{/*sets roll over colour for nav bar*/
+    background-color: navy ;/*changes colour when you hold mouse over items*/
+}
+
+nav li{  /* creates spceing around items in nav bar*/
+    padding: 5px 20px 5px 20px; /* top right and bottem left*/
+}
+
+.container {
+    display: flex;/*sets displays as flexible*/
+    justify-content: center;/* alines content to center */
+    align-items: center;/*alines items to center*/
+    flex-direction: column;/*displays the defult row to coloum*/
+}
+.topbar {
+    background-color: dodgerblue;     /* dark grey background */
+    color: white;               /* text colour */
+    padding: 15px;              /* space inside */
+    display: flex;              /* puts items side by side */
+    justify-content: space-between; /* space between title and nav */
+    align-items: center;        /* vertically centre */
+}
+
+input[type="submit"] {
+    background-color: lightskyblue;
+    border: none;
+}
+input[type="submit"]:hover {
+    background-color: navy; /* darker when hovered */
+}
+

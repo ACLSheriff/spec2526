@@ -1,0 +1,14 @@
+body {
+    background-color: beige;
+}
+
+h1 {
+    color: dodgerblue;
+    text-align: center;
+    font-size: medium;
+}
+
+p {
+    color: red;
+    font-size: medium;
+}

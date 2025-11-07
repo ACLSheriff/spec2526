@@ -1,0 +1,55 @@
+nav ul {
+    list-style-type: none; /*removed buleit points*/
+    margin: 0; /* removed any defult margins  */
+    padding: 0; /* removes any defult padding*/
+    display: flex; /* makes it stacks across*/
+    justify-content: flex-start; /* stacks across*/
+    background-color: black; /*background colour of the page */
+}
+
+
+nav li:hover{/*sets roll over colour for nav bar*/
+    background-color: navy ;/*changes colour when you hold mouse over items*/
+;
+}
+
+nav li{  /* creates spceing around items in nav bar*/
+    padding: 5px 20px 5px 20px; /* top right and bottem left*/
+}
+
+nav a {
+    color: aquamarine; /* Change this to whatever color you want */
+}
+
+.container {
+    display: flex;/*sets displays as flexible*/
+    justify-content: center;/* alines content to center */
+    align-items: center;/*alines items to center*/
+    flex-direction: column;/*displays the defult row to coloum*/
+}
+.content {
+    display: flex;/*sets displays as flexible*/
+    justify-content: center;/* alines content to center */
+    align-items: center;/*alines items to center*/
+    flex-direction: column;/*displays the defult row to coloum*/
+}
+
+h2 {
+    width: 100%;
+    background-color: lightseagreen;
+    display: flex;
+    justify-content: center;/* alines content to center */
+    align-items: center;/*alines items to center*/
+
+}
+
+.topbar {
+    background-color: black;
+    color: aquamarine;
+    width: 100%;
+    font-size: xx-large;
+    display: flex;
+    justify-content: center;/* alines content to center */
+    align-items: center;/*alines items to center*/
+
+}
