@@ -15,23 +15,30 @@ elseif ($_SERVER["REQUEST_METHOD"] === "POST") {//verifys the function
 
     $fusername = filter_var($_POST['username'], FILTER_SANITIZE_STRING);//fitered veriable to make sure its not going to cause an error and that its secure
     $fpassword = filter_var($_POST['password'], FILTER_SANITIZE_STRING);
+    try{
+        $usr = login(dbconnect_insert(),$_POST);//calls login fuction
 
-    $usr = login(dbconnect_insert(),$_POST);//calls login fuction
+        if($usr && password_verify($fpassword,$usr['password'])){// checking the username and password match and is present
+            $_SESSION['userid'] = $usr["user_id"];//sets and store user id
+            $_SESSION['usermessage'] = "SUCCESSFULLY LOGGED IN";//success message
+            auditor(dbconnect_insert(),$_SESSION['userid'],"log", "user has successfully logged in". $_SESSION['userid']);
+            header("location:index.php");//send back to home page
+            exit;//exits page ends code
+        }elseif (!$usr){
+            $_SESSION['usermessage'] = "ERROR:user not found";
+            header("location:login.php");
+            exit;
+        }else{//if username isnt valid
+            $_SESSION["usermessage"] = "INVALID USERNAME OR PASSWORD";//send error mesasge to be printed
+            header("location:login.php");//gose back to login page
+            exit;//ends code
+        }
+    } catch (PDOException $e) {
+        $_SESSION['usermessage'] = "ERROR USER LOG IN FAILED ". $e->getMessage();
+    }
 
-    if($usr && password_verify($fpassword,$usr['password'])){// checking the username and password match and is present
-        $_SESSION['userid'] = $usr["user_id"];//sets and store user id
-        $_SESSION['usermessage'] = "SUCCESSFULLY LOGGED IN";//success message
-        auditor(dbconnect_insert(),$_SESSION['userid'],"log", "user has successfully logged in". $_SESSION['userid']);
-        header("location:index.php");//send back to home page
-        exit;//exits page ends code
-    }elseif (!$usr){
-        $_SESSION['usermessage'] = "ERROR:user not found";
-        header("location:login.php");
-        exit;
-    }else{//if username isnt valid
-        $_SESSION["usermessage"] = "INVALID USERNAME OR PASSWORD";//send error mesasge to be printed
-        header("location:login.php");//gose back to login page
-        exit;//ends code
+    catch (Exception $e) {
+        $_SESSION['usermessage'] = "ERROR USER LOG IN FAILED ". $e->getMessage();
     }
 }
 

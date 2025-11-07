@@ -2,7 +2,7 @@
 
 function new_user($conn, $post)//creates fuction
 {
-    try{// doing a prepared stament
+    // doing a prepared stament
         $sql = "INSERT INTO users (first_name, surname, username,password, d_o_b, adress) VALUES(?,?,?,?,?,?)";//easy to sql attack bjt sets the SQL statment
         $stmt = $conn->prepare($sql);//prepare sql
 
@@ -17,14 +17,6 @@ function new_user($conn, $post)//creates fuction
         $stmt->execute();// run the query to insert
         $conn = null;// gets rid of connection to make sure no open connection which is secrity breach
         return true;
-    }catch (PDOException $e){
-        error_log(" Audit database error:" . $e->getMessage());
-        throw new Exception( "Audit database error: " . $e);
-
-    }catch (Exception $e){//catching errors to make robust and giving error messages
-        error_log(" Audit  error:" . $e->getMessage());
-        throw new Exception( "Audit  error: " . $e);
-    }
 }
 
 function user_message()
@@ -42,7 +34,6 @@ function user_message()
 
 function username_check($conn, $username)
 {
-    try {
         $sql = "SELECT username FROM users where username= ?";//sql stament getting usernames from database
         $stmt = $conn->prepare($sql);//prepare sql
         $stmt->bindValue(1, $username);//subbmits paramitter so its secure
@@ -55,18 +46,11 @@ function username_check($conn, $username)
             return false;
         }
 
-    } catch (Exception $e) {//catching errors to make robust and giving error messages
-        error_log(" Audit  error:" . $e->getMessage());//logs error
-        throw  $e;//throw the exception
-    }
-
-
 }
 
 
 function login($conn, $post)
 {
-    try {// try this code
         $conn = dbconnect_insert();//gets database
         $sql = "SELECT * FROM users WHERE username= ?";//set up sql statments
         $stmt = $conn->prepare($sql);//prepares sql quary
@@ -82,11 +66,6 @@ function login($conn, $post)
             header("Location: login.php");//send back to login page
             exit();//exits code
         }
-    } catch (PDOException $e) {
-        $_SESSION['usermessage'] = "User login".$e->getMessage();//returns error mesage to output
-        header("Location: login.php");//send back to long in page
-        exit();//exits code
-    }
 }
 
 function auditor($conn, $userid, $code, $long)
@@ -125,7 +104,7 @@ function staff_getter($conn){
 
 function getnewuserid($conn, $username)
 {//gets the id of the new user to be able to enter into audit
-    try {
+
         $sql = "SELECT user_id FROM users WHERE username= ?";//sets up SQL stament getting the user a id
         $stmt = $conn->prepare($sql); //prepares SQL
         $stmt->bindValue(1, $username);   //binds paramiters for security
@@ -133,13 +112,6 @@ function getnewuserid($conn, $username)
         $result = $stmt->fetch(PDO::FETCH_ASSOC);  //brings array back from database
         $conn = null; //closes connection
         return $result["user_id"];  //returns result
-    } catch (PDOException $e) {
-        error_log(" Audit  error:" . $e->getMessage());//logs error
-        throw  $e;//throw the exception
-    }catch (Exception $e) {//catching errors to make robust and giving error messages
-        error_log(" Audit  error:" . $e->getMessage());//logs error
-        throw  $e;//throw the exception
-    }
 }
 
 function commit_booking($conn, $epoch){
