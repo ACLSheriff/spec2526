@@ -14,7 +14,7 @@ echo "<!DOCTYPE html>";//required tag
 echo "<html>";//opens page content
 echo "<head>";//opens the head of the code
 
-echo "<title> games console </title>";//titles the page
+echo "<title> home page </title>";//titles the page
 echo "<link rel='stylesheet' type='text/css' href='css/stylesheet.css'/>";//links to style sheet
 
 echo "</head>";// closes the head of the page
@@ -52,7 +52,7 @@ echo "</table>";//end of table
 echo "<br>";
 echo "<br>";//breaks for readablity
 
-echo "<img id='text' src='images/playinggame.jfif' alt='text' />";  #sets a logo up
+//echo "<img id='text' src='images/text.jfif' alt='text' />";  #sets a logo up
 
 echo "<br>";
 
