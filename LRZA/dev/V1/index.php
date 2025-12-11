@@ -28,7 +28,7 @@ require_once "assests/navbar.php";// gets and displays nav bar
 
 echo "<div class='content'>";// this class is a box that i can put content for my page into
 
-echo "<h1> brand  </h1>";
+echo "<h1>  </h1>";
 
 echo "<br>";
 echo "<br>";
