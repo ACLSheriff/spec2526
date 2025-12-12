@@ -3,7 +3,7 @@
 function new_user($conn, $post)//creates fuction
 {
 
-    $sql = "INSERT INTO users (firstname, surname, username,password, d_o_b) VALUES(?,?,?,?,?)";//easy to sql attack
+    $sql = "INSERT INTO users (firstname, surname, username, password, d_o_b) VALUES(?,?,?,?,?)";//easy to sql attack
     $stmt = $conn->prepare($sql);//prepare sql
 
     $stmt->bindValue(1, $post['firstname']);//binds values
@@ -75,9 +75,6 @@ function ticket_getter($conn){
     //gets the staff details from the table in decsding order
 
     $stmt = $conn->prepare($sql);//prepares SQL statment
-    $exclude_role = "adm";//exclueds and dosnt get any admin staff from the table
-
-    $stmt->bindValue(1,$exclude_role);//binds value to make sure role is excluded
 
     $stmt->execute(); //run the query to insert
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -88,12 +85,11 @@ function ticket_getter($conn){
 
 
 function commit_booking($conn, $epoch){
-    $sql = "INSERT INTO booking (user_id, ticket_id, date ) VALUES(?,?,?)";//inserts the bookinf details into the booking table
+    $sql = "INSERT INTO booking (user_id, ticket_id, date) VALUES(?,?,?)";//inserts the bookinf details into the booking table
     $stmt = $conn->prepare($sql);//prepares sql statment
     $stmt->bindValue(1, $_SESSION['userid']);//binds values
     $stmt->bindValue(2, $_POST['ticket_id']);
     $stmt->bindValue(3, $epoch);//puts in epoch time
-    $stmt->bindValue(4, time());
 
     $stmt->execute();//exicutes sql statment
     $conn = null;//cutts off connection to prevent ecurity breaches
@@ -103,7 +99,7 @@ function commit_booking($conn, $epoch){
 
 function appt_getter($conn)
 {
-    $sql = "SELECT b.booking_id, b.aptdate, b.bookedon, s.role, s.surname FROM bookings b JOIN staff s ON b.staff_id = s.staff_id WHERE b.user_id = ? ORDER BY b.aptdate ASC";
+    $sql = "SELECT b.booking_id, b.date FROM booking b JOIN ticket s ON b.ticket_id = s.ticket_id WHERE b.user_id = ? ORDER BY b.aptdate ASC";
     // selects the feils from the diffrent tables, it gets them from the bookings table which we have labled b and joins the docters table with have labled s
     // and use staff id to link together from each table, where it has the user id that that is being used and this will be pulled and orderd by the appiment date in asending order
     $stmt = $conn->prepare($sql);//prepares the SQL stament
@@ -122,12 +118,12 @@ function appt_getter($conn)
 }
 
 
-function cancel_appt($conn, $aptid)
+function cancel_booking($conn, $bookid)
 {
-    $sql = "DELETE FROM bookings WHERE booking_id = ?";//this deltes the booking the user selected from the database
+    $sql = "DELETE FROM booking WHERE booking_id = ?";//this deltes the booking the user selected from the database
     $stmt = $conn->prepare($sql);//prepares SQL statment
 
-    $stmt->bindValue(1,$aptid);// finds the user id and binds to value
+    $stmt->bindValue(1,$bookid);// finds the user id and binds to value
 
     $stmt->execute(); //run the query to insert
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);//
@@ -136,24 +132,9 @@ function cancel_appt($conn, $aptid)
 
 }
 
-
-function getnewuserid($conn, $username)
-{//gets the id of the new user to be able to enter into audit
-
-    $sql = "SELECT user_id FROM users WHERE username= ?";//sets up SQL stament getting the user a id
-    $stmt = $conn->prepare($sql); //prepares SQL
-    $stmt->bindValue(1, $username);   //binds paramiters for security
-    $stmt->execute(); //run quary to insert
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);  //brings array back from database
-    $conn = null; //closes connection
-    return $result["user_id"];  //returns result
-}
-
-
-
 function fetch_appt($conn, $booking_id)
 {
-    $sql = "SELECT * FROM bookings WHERE booking_id = ?";//gets the bookings infomation
+    $sql = "SELECT * FROM booking WHERE booking_id = ?";//gets the bookings infomation
     $stmt = $conn->prepare($sql);//prepares SQL statment
 
     $stmt->bindValue(1, $booking_id);// finds the booking id and binds to value
@@ -166,7 +147,7 @@ function fetch_appt($conn, $booking_id)
 
 function appt_update($conn, $booking_id, $apt_time)
 {
-    $sql = "UPDATE bookings SET staff_id = ?, aptdate = ? WHERE booking_id = ?";//update bookings and resets the staff and appoimnet date
+    $sql = "UPDATE booking SET staff_id = ?, aptdate = ? WHERE booking_id = ?";//update bookings and resets the staff and appoimnet date
     $stmt = $conn->prepare($sql);//prepares stament
     $stmt->bindParam(1, $_POST['staff']);//binds paramiters that have been changed by user
     $stmt->bindParam(2, $apt_time);

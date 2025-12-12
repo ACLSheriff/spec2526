@@ -56,27 +56,26 @@ echo "<br>";
 echo user_message();//calls the function
 echo "<br>";
 
-$appts = appt_getter(dbconnect_insert());//getting appoiments from database
-if(!$appts){//if there are no appoiments it will tell the user
+$tickets = appt_getter(dbconnect_insert());//getting appoiments from database
+if(!$tickets){//if there are no appoiments it will tell the user
     echo "no bookings found";
 }else{
 
     echo "<table id='bookings'>";//starts a table for bookings
 
-    foreach($appts as $appt) {// split each appiment to show sepratly and formmat the appoimnet details together
-        if ($appt['role'] = "con") {
-            $role = "consultant";
-        } else if ($appt['role'] = "inst") {
-            $role = "installer";
+    foreach($tickets as $ticket) {// split each appiment to show sepratly and formmat the appoimnet details together
+        if ($ticket['type'] = "con") {//adulet ticket, child ticket, family ticket, educational ticket
+            $type = "consultant";
+        } else if ($ticket['type'] = "inst") {
+            $type = "installer";
         }
 
         echo "<form action='' method='post'>";// creating a form per row of the table for each appinment
 
         echo "<tr>";
-        echo "<td> Date:" . date('M d, Y @ h:i A', $appt['aptdate']) . "</td>";//using a built in fuction and telling it what format our epoch time should go in for when the apt is
-        echo "<td> Made on: " . date('M d, Y @ h:i A', $appt['bookedon']) . "</td>";//using a built in fuction and telling it what format our epoch time should go in for when the apt was made
-        echo "<td> with: " . $role . " " . $appt['surname'] . "</td>";//will show the docters surname
-        echo "<td><input type='hidden' name='appid' value='".$appt['booking_id']."'>
+        echo "<td> Date:" . date('M d, Y @ h:i A', $tickets['date']) . "</td>";//using a built in fuction and telling it what format our epoch time should go in for when the apt is
+        echo "<td> type: " . $type . " " . $tickets['type'] . "</td>";//will show the docters surname
+        echo "<td><input type='hidden' name='appid' value='".$tickets['booking_id']."'>
         <input type='submit' name='appdelete' value='cancel appt' />
         <input type='submit' name='appchange' value='change appt'/></td>";//set the value without needed to input, allows user to submit and change
 
