@@ -57,7 +57,7 @@ echo "<p>  </p>";//paragh of text to instruct
 echo "<br>";// breaks for readability
 echo "<form method='post' action=''>"; //this creates the form
 
-$staff = staff_getter(dbconnect_insert());//gets the staff from the database
+$staff = ticket_getter(dbconnect_insert());//gets the staff from the database
 
 
 echo "<layble for='appt_time'> Appointment time:</lable>";//allows user to input a appointment time

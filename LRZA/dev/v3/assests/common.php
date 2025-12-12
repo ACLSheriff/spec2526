@@ -69,7 +69,7 @@ function login($conn, $post)
 }
 
 
-function staff_getter($conn){
+function ticket_getter($conn){
 
     $sql = "SELECT ticket_id, type, quantity, price FROM ticket WHERE type != ? ORDER BY role DESC";//sets up SQL stament
     //gets the staff details from the table in decsding order
@@ -88,10 +88,10 @@ function staff_getter($conn){
 
 
 function commit_booking($conn, $epoch){
-    $sql = "INSERT INTO bookings (user_id, staff_id, aptdate, bookedon) VALUES(?,?,?,?)";//inserts the bookinf details into the booking table
+    $sql = "INSERT INTO booking (user_id, ticket_id, date ) VALUES(?,?,?)";//inserts the bookinf details into the booking table
     $stmt = $conn->prepare($sql);//prepares sql statment
     $stmt->bindValue(1, $_SESSION['userid']);//binds values
-    $stmt->bindValue(2, $_POST['staff']);
+    $stmt->bindValue(2, $_POST['ticket_id']);
     $stmt->bindValue(3, $epoch);//puts in epoch time
     $stmt->bindValue(4, time());
 
