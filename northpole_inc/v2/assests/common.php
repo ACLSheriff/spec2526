@@ -48,3 +48,57 @@ function username_check($conn, $username)
 
 
 }
+
+
+function gift_getter($conn){
+
+    $sql = "SELECT gift_id, brand, about FROM gifts ORDER BY brand DESC";//sets up SQL stament
+    //gets the staff details from the table in decsding order
+
+    $stmt = $conn->prepare($sql);//prepares SQL statment
+
+    $stmt->execute(); //run the query to insert
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $conn = null;  // close the connection so cant be abused
+    return $result;  // registration successful
+
+}
+
+
+function add_gift($conn){
+    $sql = "INSERT INTO gift (brand, about) VALUES(?,?)";//inserts the bookinf details into the booking table
+    $stmt = $conn->prepare($sql);//prepares sql statment
+    $stmt->bindValue(1, $brand);//binds values
+    $stmt->bindValue(2, $about);
+
+
+    $stmt->execute();//exicutes sql statment
+    $conn = null;//cutts off connection to prevent ecurity breaches
+    return true;
+}
+
+function add_new_gift($conn, $epoch){
+
+
+}
+
+
+function appt_getter($conn)
+{
+    $sql = "SELECT w.wishlist_id, w., b.bookedon, s.role, s.surname FROM bookings b JOIN staff s ON b.staff_id = s.staff_id WHERE b.user_id = ? ORDER BY g.brand ASC";
+    // selects the feils from the diffrent tables, it gets them from the bookings table which we have labled b and joins the docters table with have labled s
+    // and use staff id to link together from each table, where it has the user id that that is being used and this will be pulled and orderd by the appiment date in asending order
+    $stmt = $conn->prepare($sql);//prepares the SQL stament
+
+    $stmt->bindValue(1,$_SESSION['userid']);//binds value
+
+    $stmt->execute(); //run the query to insert
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);//featches all the results
+    $conn = null;  // close the connection so cant be abused
+    if($result){//will check if there is a result
+        return $result;//returns result
+    } else{
+        return false;//otherwise we can return false
+    }
+
+}
