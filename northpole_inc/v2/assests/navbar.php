@@ -6,8 +6,15 @@ echo "<nav>";  //used to layout my hyperlinks
 echo "<ul>";  // opens the list
 
 echo "<li> <a href='index.php'> Home </a> </li>";//links of each page that can be displayed to click through
-echo "<li> <a href='register.php'>  User register </a> </li>";
-echo "<li> <a href='login.php'>  Login </a> </li>";
+
+if(!isset($_SESSION['userid'])) {//only lets the user see when not logged in
+    echo "<li> <a href='login.php'> Login </a> </li>";
+    echo "<li> <a href='register.php'> User register </a> </li>";
+} else {//sections the user can see once logged in
+    echo "<li> <a href='logout.php'> Logout </a></li>";
+    echo "<li> <a href='wishlist.php'> wishlist </a> </li>";
+
+}
 
 echo "</ul>";  // closes the row of the list.
 

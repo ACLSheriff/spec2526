@@ -50,6 +50,27 @@ function username_check($conn, $username)
 }
 
 
+function login($conn, $post)
+{
+    $conn = dbconnect_insert();//gets database
+    $sql = "SELECT * FROM users WHERE username= ?";//set up sql statments
+    $stmt = $conn->prepare($sql);//prepares sql quary
+    $stmt->bindValue(1, $post['username']);//binds paramiter to execute
+    $stmt->execute();//run from sql code
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);//brings back resuts
+    $conn = null;//stops connection
+
+    if ($result) {//if there is a result returned
+        return $result;//returns result
+    } else {
+        $_SESSION['usermessage'] = "User not found";//send message from error to be printed
+        header("Location: login.php");//send back to login page
+        exit();//exits code
+    }
+}
+
+
+
 function gift_getter($conn){
 
     $sql = "SELECT gift_id, brand, about FROM gifts ORDER BY brand DESC";//sets up SQL stament
@@ -83,9 +104,9 @@ function add_new_gift($conn, $epoch){
 }
 
 
-function appt_getter($conn)
+function wishlist_getter($conn)
 {
-    $sql = "SELECT w.wishlist_id, w., b.bookedon, s.role, s.surname FROM bookings b JOIN staff s ON b.staff_id = s.staff_id WHERE b.user_id = ? ORDER BY g.brand ASC";
+    $sql = "SELECT w.wishlist_id, w.date , g.brand, g.about FROM wishlist w JOIN gifts g ON w.gift_id = g.gift_id WHERE w.user_id = ? ORDER BY g.brand ASC";
     // selects the feils from the diffrent tables, it gets them from the bookings table which we have labled b and joins the docters table with have labled s
     // and use staff id to link together from each table, where it has the user id that that is being used and this will be pulled and orderd by the appiment date in asending order
     $stmt = $conn->prepare($sql);//prepares the SQL stament
