@@ -98,6 +98,19 @@ function add_gift($conn){
     return true;
 }
 
+
+function add_wish($conn){
+    $sql = "INSERT INTO wishlist (gift_id, ) VALUES(?,?)";//inserts the bookinf details into the booking table
+    $stmt = $conn->prepare($sql);//prepares sql statment
+    $stmt->bindValue(1, $brand);//binds values
+    $stmt->bindValue(2, $about);
+
+
+    $stmt->execute();//exicutes sql statment
+    $conn = null;//cutts off connection to prevent ecurity breaches
+    return true;
+}
+
 function add_new_gift($conn, $epoch){
 
 

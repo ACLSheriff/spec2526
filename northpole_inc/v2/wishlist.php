@@ -27,8 +27,8 @@ if (!isset($_SESSION['userid'])) {//if the user id is not set
             $_SESSION['message'] = "ERROR: " . $e->getMessage();
         }
     }elseif(isset($_POST['giftadd'])){//if they want to change the appoimnet
-        $_SESSION['apptid'] = $_POST['appid'];//puts the appointment id in post
-        header("location:add_gift.php");//sends the user to the change booking page
+        $_SESSION['giftid'] = $_POST['appid'];//puts the appointment id in post
+
         exit;//exits page
     }
 }
@@ -79,6 +79,8 @@ if(!$gifts){
 
     echo "</select>";
 }
+echo "<input type='submit' name='giftadd' value='add a gift'/>";
+
 
 echo "<br>";
 
@@ -98,8 +100,7 @@ if(!$wishes){//if there are no appoiments it will tell the user
         echo "<td> brand:" . ( $wishes['brand']) . "</td>";//using a built in fuction and telling it what format our epoch time should go in for when the apt is
         echo "<td> Made on: " . ( $wishes['about']) . "</td>";//using a built in fuction and telling it what format our epoch time should go in for when the apt was made
         echo "<td><input type='hidden' name='wishid' value='".$wishes['wishlist_id']."'>
-        <input type='submit' name='giftdelete' value='delete gift' />
-        <input type='submit' name='giftadd' value='add a gift'/></td>";//set the value without needed to input, allows user to submit and change
+        <input type='submit' name='giftdelete' value='delete gift' /></td>";//set the value without needed to input, allows user to submit and change
 
         echo "</tr>";
         echo "</form>";//closes form and table

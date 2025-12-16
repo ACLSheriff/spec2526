@@ -58,24 +58,6 @@ echo "<h2> Change booking </h2>";//heading
 echo "<br>";// breaks for readability
 echo "<form method='post' action=''>"; //this creates the form
 
-$staff = gift_getter(dbconnect_insert());//gets the staff
-
-$apt_time = date('H:i', $appt['aptdate']);//formatts the epoc time they origonly had
-$apt_date = date('Y-m-d', $appt['aptdate']);//formatts the epoc date they had
-
-echo "<layble for='apt_time'> Appointment time:</lable>";//shows the appoimnet time
-echo "<input type='time' name='apt_time'  value='" . $apt_time . "' required>";//pulled in data from database and showing user what they have picked
-echo "<br>";
-
-
-echo "<layble for='apt_date'> Appointment date:</lable>";//shows appoimnet date
-echo "<input type='date' name='apt_date'value='" . $apt_date . "' required>";//pulls from database showing the user what date they picked
-echo "<br>";
-echo "<select name='staff'>";//allows user to see and select staff
-
-    echo "<option value='" . $staf["staff_id"] . " '>" . $selected . " " . $role . " " . $staf["surname"] . " Room " . $staf["room"] . "</option>";//formmatts staff details so you can see there surname, and room number
-
-echo "</select>";
 
 echo "<br>";
 
