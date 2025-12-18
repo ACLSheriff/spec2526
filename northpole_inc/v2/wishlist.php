@@ -8,7 +8,6 @@ require_once "assests/common.php";
 
 if (!isset($_SESSION['userid'])) {//if the user id is not set
     $_SESSION['usermessage'] = "you are not logged in";///checks if user is already logged in and will return message if so
-    unset($_SESSION['appid']);//unsets the appitmnet id
     header("location:index.php");//returns to home page
     exit;//stop further exicution
 
@@ -27,8 +26,7 @@ if (!isset($_SESSION['userid'])) {//if the user id is not set
             $_SESSION['message'] = "ERROR: " . $e->getMessage();
         }
     }elseif(isset($_POST['giftadd'])){//if they want to change the appoimnet
-        $_SESSION['giftid'] = $_POST['appid'];//puts the appointment id in post
-
+        if(add_gift($_POST['gift_select'], dbconnect_insert()));
         exit;//exits page
     }
 }
@@ -74,7 +72,7 @@ if(!$gifts){
 } else {
     echo "<select name='gift_select'>";
     foreach ($gifts as $gift) {
-        echo "<option value='" . $gift['brand'] . "'>" . $gift['about'] . "</option>";
+        echo "<option value='" . $gift['gift_id'] . "'>" . $gift['brand']. " " . $gift['about'] . " </option>";
     }
 
     echo "</select>";
