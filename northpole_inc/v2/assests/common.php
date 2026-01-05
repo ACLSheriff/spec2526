@@ -33,7 +33,6 @@ function user_message()
 
 function username_check($conn, $username)
 {
-
         $sql = "SELECT username FROM users where username= ?";//sql stament getting usernames from database
         $stmt = $conn->prepare($sql);//prepare sql
         $stmt->bindValue(1, $username);//subbmits paramitter so its secure
@@ -45,8 +44,6 @@ function username_check($conn, $username)
         } else {
             return false;
         }
-
-
 }
 
 
@@ -70,7 +67,6 @@ function login($conn, $post)
 }
 
 
-
 function gift_getter($conn){
 
     $sql = "SELECT gift_id, brand, about FROM gifts ORDER BY brand DESC";//sets up SQL stament
@@ -91,7 +87,6 @@ function add_gift($conn){
     $stmt = $conn->prepare($sql);//prepares sql statment
     $stmt->bindValue(1, $brand);//binds values
     $stmt->bindValue(2, $about);
-
 
     $stmt->execute();//exicutes sql statment
     $conn = null;//cutts off connection to prevent ecurity breaches

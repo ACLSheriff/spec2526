@@ -59,7 +59,6 @@ echo "<form method='post' action=''>"; //this creates the form
 
 $staff = ticket_getter(dbconnect_insert());//gets the staff from the database
 
-
 echo "<layble for='appt_time'> Appointment time:</lable>";//allows user to input a appointment time
 echo "<input type='time' name='appt_time' required>";
 echo "<br>";
