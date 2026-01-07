@@ -19,9 +19,8 @@ if (!isset($_SESSION['userid'])) {//if the user id is not set stops them accessi
         $tmp = $_POST["apt_date"] . ' ' . $_POST["apt_time"];//cobines it into a single string with a sigle dat and time
         $epoch_time = strtotime($tmp);//converting to epoc time this passing of the veribale is best practice and minimises issues
         if (appt_update(dbconnect_insert(), $_SESSION['apptid'], $epoch_time)) {//trys to update appoiment and change in database
-            $_SESSION["usermessage"] = "SUCCESS: your booking has been confirmed";//user message telling them that the appoimnet was changed
-            auditor(dbconnect_insert(), $_SESSION['userid'], "log", "user has changed an appointment" . $_SESSION['userid']);//audits that the user has changed an appoimnet
-            header("Location: bookings.php");// sends back to booking page
+            $_SESSION["usermessage"] = "SUCCESS: your gift has been added";//user message telling them that the appoimnet was changed
+            header("Location: wishlist.php");// sends back to booking page
             exit;
         } else {
             $_SESSION["usermessage"] = "ERROR: something went wrong";// error message if it cant be changed
@@ -61,7 +60,12 @@ echo "<form method='post' action=''>"; //this creates the form
 
 echo "<br>";
 
-echo "<input type='submit' name='submit' value='Update Appointment'>";//allows user to update appoimnet
+echo "<input type='text' name='brand' placeholder='brand' <input/>";
+echo "<br>";
+echo "<input type='text' name='about' placeholder='about' </input>";
+echo "<br>";
+
+echo "<input type='submit' name='submit' value='add gift'>";//allows user to update appoimnet
 
 echo "</form>";//end form
 

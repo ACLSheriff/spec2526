@@ -82,12 +82,11 @@ function gift_getter($conn){
 }
 
 
-function add_gift($conn){
+function add_gift($conn, $post){
     $sql = "INSERT INTO gift (brand, about) VALUES(?,?)";//inserts the bookinf details into the booking table
     $stmt = $conn->prepare($sql);//prepares sql statment
-    $stmt->bindValue(1, $brand);//binds values
-    $stmt->bindValue(2, $about);
-
+    $stmt->bindValue(1, $post['brand']);//binds values
+    $stmt->bindValue(2, $post['about']);
     $stmt->execute();//exicutes sql statment
     $conn = null;//cutts off connection to prevent ecurity breaches
     return true;
@@ -95,20 +94,13 @@ function add_gift($conn){
 
 
 function add_wish($conn){
-    $sql = "INSERT INTO wishlist (gift_id, ) VALUES(?,?)";//inserts the bookinf details into the booking table
+    $sql = "INSERT INTO wishlist (gift_id,user_id,date ) VALUES(?,?,?)";//inserts the bookinf details into the booking table
     $stmt = $conn->prepare($sql);//prepares sql statment
-    $stmt->bindValue(1, $brand);//binds values
-    $stmt->bindValue(2, $about);
-
-
+    $stmt->bindValue(1,$_SESSION['userid']);//binds value
+    $stmt->bindValue(2,$_SESSION['gift_id']);
     $stmt->execute();//exicutes sql statment
     $conn = null;//cutts off connection to prevent ecurity breaches
     return true;
-}
-
-function add_new_gift($conn, $epoch){
-
-
 }
 
 
