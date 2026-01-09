@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 09, 2026 at 11:12 AM
+-- Generation Time: Jan 09, 2026 at 02:25 PM
 -- Server version: 8.4.3
 -- PHP Version: 8.3.26
 
@@ -71,7 +71,9 @@ CREATE TABLE `users` (
   `user_id` int NOT NULL,
   `username` text NOT NULL,
   `password` text NOT NULL,
-  `address` text NOT NULL
+  `address` text NOT NULL,
+  `firstname` text NOT NULL,
+  `surname` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
