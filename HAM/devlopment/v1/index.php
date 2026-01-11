@@ -34,11 +34,10 @@ echo "<br>";
 echo "<br>";
 
 //paragh text
-echo "<p>  </p>";
-echo "<p> </p>";
-echo "<p> </p>";
-echo "<p> </p>";
-echo "<p> </p>";
+echo "<p> Managing multiple rental homes doesn’t have to be complicated. </p>";
+echo "<p> Our Home Asset Management system helps property owners </p>";
+echo "<p> track, organize, and manage every asset across their portfolio with ease. </p>";
+echo "<p> stay organized and in control of all your rental properties. </p>";
 
 echo "<br>";//breaks for readablity
 
