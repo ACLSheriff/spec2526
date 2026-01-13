@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//checking a super globle to see if t
     $_POST['firstname'] = htmlspecialchars($_POST['firstname'], ENT_QUOTES, 'UTF-8');
     $_POST['surname'] = htmlspecialchars($_POST['surname'], ENT_QUOTES, 'UTF-8');
     $_POST['password'] = htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8');
-
+    $_POST['address'] = htmlspecialchars($_POST['address'], ENT_QUOTES, 'UTF-8');
 
     try {
 
@@ -67,6 +67,8 @@ echo "<input type='text' name='surname' placeholder='surname' <input/>";
 echo "<br>";
 echo "<input type='text' name='password' placeholder='password' </input>";
 echo "<br>";
+echo "<input type='text' name='address' value='address' ></input>";
+echo "<br>";
 echo "<input type='submit' name='submit' value='submit' />";//submit button for form
 
 echo "</form>";//end form
@@ -76,9 +78,11 @@ echo "<br>";
 
 echo "<h3>We use the details you provide to create and manage your account, verify your identity, and give you secure access to our 
 services. </h3>";
+
 echo "<table>";//starts a table
 echo "<ul>";//bullit points the list
 //these are all items in the list
+
 echo "<li> Username & Password: For secure login. </li>";//items in list
 echo "<li> Name: To personalise communication. </li>";
 echo "<ul>";// end of list

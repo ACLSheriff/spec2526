@@ -48,3 +48,53 @@ function username_check($conn, $username)
 
 
 }
+
+
+function login($conn, $post)
+{
+    $conn = dbconnect_insert();//gets database
+    $sql = "SELECT * FROM users WHERE username= ?";//set up sql statments
+    $stmt = $conn->prepare($sql);//prepares sql quary
+    $stmt->bindValue(1, $post['username']);//binds paramiter to execute
+    $stmt->execute();//run from sql code
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);//brings back resuts
+    $conn = null;//stops connection
+
+    if ($result) {//if there is a result returned
+        return $result;//returns result
+    } else {
+        $_SESSION['usermessage'] = "User not found";//send message from error to be printed
+        header("Location: login.php");//send back to login page
+        exit();//exits code
+    }
+}
+
+
+function add_house($conn, $epoch){
+    $sql = "INSERT INTO house (reg_date, address, street) VALUES(?,?,?)";//inserts the bookinf details into the booking table
+    $stmt = $conn->prepare($sql);//prepares sql statment
+    $stmt->bindValue(1, $epoch);//binds values
+    $stmt->bindValue(2, $_POST['address']);
+    $stmt->bindValue(3, $_POST['street']);//puts in epoch time
+
+    $stmt->execute();//exicutes sql statment
+    $conn = null;//cutts off connection to prevent ecurity breaches
+    return true;
+}
+
+function add_house_reg($conn, $userid)
+{
+    $sql = "INSERT INTO veiws (longdesc, role, user_id) VALUES(?,?,?)";
+    $stmt = $conn->prepare($sql);
+    $longdesc = "owner of the house";
+    $stmt->bindValue(1, $longdesc );
+    $role = "owner";
+    $stmt->bindValue(2, $role);
+    $stmt->bindValue(3, $userid);
+
+    $stmt->execute();
+    $conn = null;
+    return true;
+
+}
+
