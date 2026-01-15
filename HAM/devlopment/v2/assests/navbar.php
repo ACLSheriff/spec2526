@@ -13,8 +13,8 @@ if (!isset($_SESSION['userid'])) {//only lets the user see when not logged in
     echo "<li> <a href='register.php'> User register </a> </li>";
 } else {//sections the user can see once logged in
     echo "<li> <a href='logout.php'> Logout </a></li>";
-    echo "<li> <a href='bookings.php'> Bookings </a> </li>";
-    echo "<li> <a href='book.php'> Book </a> </li>";
+    echo "<li> <a href='veiw_house.php'> veiw houses </a> </li>";
+    echo "<li> <a href='add_house.php'> add a house </a> </li>";
 }
 
 echo "</ul>";  // closes the row of the list.

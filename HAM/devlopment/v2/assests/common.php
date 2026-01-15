@@ -82,15 +82,28 @@ function add_house($conn, $epoch){
     return true;
 }
 
-function add_house_reg($conn, $userid)
+function get_house_id($conn)
 {
-    $sql = "INSERT INTO veiws (longdesc, role, user_id) VALUES(?,?,?)";
+    $sql = "SELECT house_id FROM house WHERE street= ?";
     $stmt = $conn->prepare($sql);
+    $stmt->bindValue(1, $_POST['street']);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    $conn = null;
+    return $result;
+
+}
+
+function add_house_reg($conn, $userid, $house_id)
+{
+    $sql = "INSERT INTO veiws (house_id, longdesc, role, user_id) VALUES(?,?,?,?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue(1, $house_id);
     $longdesc = "owner of the house";
-    $stmt->bindValue(1, $longdesc );
+    $stmt->bindValue(2, $longdesc );
     $role = "owner";
-    $stmt->bindValue(2, $role);
-    $stmt->bindValue(3, $userid);
+    $stmt->bindValue(3, $role);
+    $stmt->bindValue(4, $userid);
 
     $stmt->execute();
     $conn = null;
@@ -98,3 +111,22 @@ function add_house_reg($conn, $userid)
 
 }
 
+
+function house_getter($conn, $user_id){
+    $sql = "SELECT v.house_id, v.role, v.longdesc, h.reg_date, h.address, h.street FROM veiws v JOIN house h ON v.house_id = h.house_id WHERE v.user_id = ? ORDER BY h.house_id ASC";
+    // selects the feils from the diffrent tables, it gets them from the bookings table which we have labled b and joins the docters table with have labled s
+    // and use staff id to link together from each table, where it has the user id that that is being used and this will be pulled and orderd by the appiment date in asending order
+    $stmt = $conn->prepare($sql);//prepares the SQL stament
+
+    $stmt->bindValue(1,$_SESSION['userid']);//binds value
+
+    $stmt->execute(); //run the query to insert
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);//featches all the results
+    $conn = null;  // close the connection so cant be abused
+    if($result){//will check if there is a result
+        return $result;//returns result
+    } else{
+        return false;//otherwise we can return false
+    }
+
+}
