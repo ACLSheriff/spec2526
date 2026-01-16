@@ -84,7 +84,8 @@ function add_house($conn, $epoch){
 
 function get_house_id($conn)
 {
-    $sql = "SELECT house_id FROM house ORDER BY house_id DESC LIMIT 1";//sets up SQL stament getting the user a id
+    $sql = "SELECT house_id FROM house ORDER BY house_id DESC LIMIT 1";//sets up SQL stament getting the user a id ( the limit only lets one record be taken so
+    // only the first record and since its in descending order it will be the last record added
     $stmt = $conn->prepare($sql); //prepares SQL
     $stmt->execute(); //run quary to insert
     $result = $stmt->fetch(PDO::FETCH_ASSOC);  //brings array back from database
@@ -126,5 +127,10 @@ function house_getter($conn, $user_id){
     } else{
         return false;//otherwise we can return false
     }
+
+function get_users($conn)
+{
+    $sql = "SELECT * FROM users WHERE house_id = ?";
+}
 
 }

@@ -20,10 +20,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {//verifys the function
         } catch (Exception $e) {
             $_SESSION['message'] = "ERROR: " . $e->getMessage();
         }
-    }elseif(isset($_POST['transfer_house'])){//if they want to change the appoimnet
+    }elseif(isset($_POST['add_user'])){//if they want to change the appoimnet
         header("location:change_booking.php");//sends the user to the change booking page
         exit;//exits page
-    }elseif (isset($_POST['mange_house'])) {
+    }elseif (isset($_POST['veiw_rooms'])) {
+        header("location:mange_house.php");
+        exit;
+    }elseif (isset($_POST['add_rooms'])) {
         header("location:mange_house.php");
         exit;
     }
@@ -63,20 +66,20 @@ echo "<form method='post' action=''>"; //this creates the form
         } else if ($detail['role'] = "veiw") {
             $role = "veiwer";
         }
-        echo "<p> users role: ".$role." description: ". $details["longdesc"]."</p>";
+        echo "<p> users role: ".$role." description: ". $detail["longdesc"]."</p>";
     }
 
 
 echo "<tr>";
-echo "<td> Date added:" . date('M d, Y @ h:i A', $details['reg_date']) . "</td>";//showing users when the house was registered with a premade format
-echo "<td> your previlages: " . $role . " " . $details['role'] . "</td>";//will show the users role for that house
-echo "<td> address: " . $details['address'] . "</td>";//show house address
-echo "<td><input type='hidden' name='appid' value='" . $details['house_id'] . "'>;
+echo "<td> Date added:" . $detail['reg_date'] . "</td>";//showing users when the house was registered with a premade format ( if epoch time i would formatt this but not formatting as stored as date
+echo "<td> your previlages: " . $role . " </td>";//will show the users role for that house
+echo "<td> address: " . $detail['address'] . "</td>";//show house address
+echo "<td><input type='hidden' name='appid' value='" . $detail['house_id'] . "'>;
 
     <input type='submit' name='add_room' value='add room' />
     <input type='submit' name='veiw_rooms' value='veiw rooms'</td>";
 
-if ($details['role'] == "owner") {
+if ($detail['role'] == "owner") {
     echo "<tr>";
     $users = get_users(dbconnect_insert());
         if(!$details){

@@ -58,7 +58,7 @@ echo "<br>";
 echo user_message();//calls the function
 echo "<br>";
 
-$houses = house_getter(dbconnect_insert());//getting appoiments from database
+$houses = house_getter(dbconnect_insert(), $_SESSION['userid']);//getting appoiments from databas
 if(!$houses){//if there are no appoiments it will tell the user
     echo "no houses found";
 }else{
@@ -77,10 +77,13 @@ if(!$houses){//if there are no appoiments it will tell the user
         echo "<form action='' method='post'>";// creating a form per row of the table for each appinment
 
         echo "<tr>";
-        echo "<td> Date added:" . date('M d, Y @ h:i A', $houses['reg_date']) . "</td>";//showing users when the house was registered with a premade format
-        echo "<td> your previlages: " . $role . " " . $house['role'] . "</td>";//will show the users role for that house
+        echo "<td> Date added:" . $house['reg_date'] . "</td>";//showing users when the house was registered with a premade format ive already stored the date as a date so its not need to be formatted
+        echo "<br>";
+        echo "<td> your previlages: " . $role . "</td>";//will show the users role for that house
+        echo "<br>";
         echo "<td> address: " . $house['address'] . "</td>";//show house address
-        echo "<td><input type='hidden' name='appid' value='" . $houses['house_id'] . "'></td>";
+        echo "<br>";
+        echo "<td><input type='hidden' name='appid' value='" . $house['house_id'] . "'></td>";
         if ($house['role'] == "owner"){
         echo "<tr>";
         echo "<td><input type='submit' name='remove_house' value='remove house' />
