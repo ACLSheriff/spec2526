@@ -18,9 +18,10 @@ elseif($_SERVER["REQUEST_METHOD"] == "POST"){
     try {
         $epoch_time = date('Y-m-d', time());//converting to epoc time this passing of the veribale is best practice and minimises issues
         if (add_house(dbconnect_insert(), $epoch_time)) {
-            $house_id = (int)$_POST['house_id'];
-            $userid = $_SESSION['userid'];
-            if (add_house_reg(dbconnect_insert(), $userid , $house_id)) {//trys to commit the house
+            $house_id = get_house_id(dbconnect_insert());
+            echo "house id ".$house_id."<br>";
+            //$userid = $_SESSION['userid'];
+            if (add_house_reg(dbconnect_insert(), $_SESSION['userid'] , $house_id)) {//trys to commit the house
                 $_SESSION["usermessage"] = "SUCCESS: your house has been added";// will send user a message confirming
                 header("Location: veiw_house.php");//sends user to see there bookings
                 exit;

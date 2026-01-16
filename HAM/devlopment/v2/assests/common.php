@@ -84,14 +84,12 @@ function add_house($conn, $epoch){
 
 function get_house_id($conn)
 {
-    $sql = "SELECT house_id FROM house WHERE street= ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bindValue(1, $_POST['street']);
-    $stmt->execute();
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    $conn = null;
-    return $result;
-
+    $sql = "SELECT house_id FROM house ORDER BY house_id DESC LIMIT 1";//sets up SQL stament getting the user a id
+    $stmt = $conn->prepare($sql); //prepares SQL
+    $stmt->execute(); //run quary to insert
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);  //brings array back from database
+    $conn = null; //closes connection
+    return $result["house_id"];  //returns result
 }
 
 function add_house_reg($conn, $userid, $house_id)
