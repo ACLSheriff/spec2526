@@ -8,9 +8,9 @@ require_once "assests/common.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {//verifys the function
 
-    if (isset($_POST['add_room'])) {//if they are deleteing an appoitment
+    if (isset($_POST['add_user'])) {//if they are deleteing an appoitment
         try {
-            if (remove_house(dbconnect_insert(), $_POST['house_id'])) {//it will call function to cancel appoinmet
+            if (add_user(dbconnect_insert(), $_POST['house_id'], $_POST['role'], $_POST['longdesc'], $user['user_id'])) {//it will call function to cancel appoinmet
                 $_SESSION['message'] = "appointment has been cancelled.";// send message to print saying its been cancelled
             } else {
                 $_SESSION['message'] = "appointment could not be cancelled.";//prints that the appoiment could not be cancled if there is an issue
@@ -20,16 +20,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {//verifys the function
         } catch (Exception $e) {
             $_SESSION['message'] = "ERROR: " . $e->getMessage();
         }
-    }elseif(isset($_POST['add_user'])){//if they want to change the appoimnet
-        header("location:change_booking.php");//sends the user to the change booking page
-        exit;//exits page
+    }elseif(isset($_POST['add_room'])){//if they want to change the appoimnet
+       header("location: add_room.php");
+       exit;
+       }
     }elseif (isset($_POST['veiw_rooms'])) {
-        header("location:mange_house.php");
+        header("location:veiw_rooms.php");
         exit;
-    }elseif (isset($_POST['add_rooms'])) {
-        header("location:mange_house.php");
-        exit;
-    }
+
 }
 
 echo "<!DOCTYPE html>";//required tag
