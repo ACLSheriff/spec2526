@@ -4,11 +4,11 @@ nav ul {
     padding: 0; /* removes any defult padding*/
     display: flex; /* makes it stacks across*/
     justify-content: flex-start; /* stacks across*/
-    background-color: darkgray /*background colour of the page */
+    background-color: lightskyblue /*background colour of the page */
 }
 
 nav li:hover{/*sets roll over colour for nav bar*/
-    background-color: darkgreen ;/*changes colour when you hold mouse over items*/
+    background-color: navy ;/*changes colour when you hold mouse over items*/
 }
 
 nav li{  /* creates spceing around items in nav bar*/
@@ -44,4 +44,16 @@ h2 {
     justify-content: center;/* alines content to center */
     align-items: center;/*alines items to center*/
 
+}
+
+table {
+    display: flex;
+    border: 3px solid dodgerblue;
+    padding: 5px 20px 5px 20px; /* top right and bottem left*/
+    outline: dodgerblue;
+}
+
+td{
+    border:1px solid navy;
+    padding: 5px 20px 5px 20px; /* top right and bottem left*/
 }

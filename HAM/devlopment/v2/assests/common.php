@@ -187,12 +187,25 @@ function add_room($conn, )
         return true;
     }
 
-function remove_room($conn, $house_id)
+function remove_room($conn, $room_id)
 {
-    $sql = "DELETE FROM house WHERE house_id = ?";
+    $sql = "DELETE * FROM rooms WHERE room_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue(1,$room_id);
+    $stmt->execute();
+    $conn = null;
+    return true;
+
 }
 
-function room_getter($conn, $user_id){
-    $sql = "SELECT * FROM veiws WHERE user_id = ? ORDER BY house_id ASC";
+function room_getter($conn, $house_id){
+    $sql = "SELECT * FROM rooms WHERE house_id = ? ORDER BY room_id ASC";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue(1,$house_id);
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $conn = null;
+    return $result;
+
 }
 

@@ -14,9 +14,9 @@ if (!isset($_SESSION['userid'])) {//if the user id is not set
 
 } elseif($_SERVER["REQUEST_METHOD"] == "POST") {//when form is submitted
 //this should be here so if there is a use of headers it can be done so the rest of teh code dosnt load so teh headers will work and change page without errors becuse the header has loaded
-    if (isset($_POST['remove_room'])) {//if they are deleteing an appoitment
+    if (isset($_POST['add_assest'])) {//if they are deleteing an appoitment
         try {
-            if (remove_room(dbconnect_insert(), $_POST['house_id'])) {//it will call function to cancel appoinmet
+            if (add_assets(dbconnect_insert(), $_POST['house_id'])) {//it will call function to cancel appoinmet
                 $_SESSION['message'] = "appointment has been cancelled.";// send message to print saying its been cancelled
             } else {
                 $_SESSION['message'] = "appointment could not be cancelled.";//prints that the appoiment could not be cancled if there is an issue
@@ -26,12 +26,6 @@ if (!isset($_SESSION['userid'])) {//if the user id is not set
         } catch (Exception $e) {
             $_SESSION['message'] = "ERROR: " . $e->getMessage();
         }
-    }elseif(isset($_POST['add_room'])){//if they want to change the appoimnet
-        header("location:add_room.php");//sends the user to the change booking page
-        exit;//exits page
-    }elseif (isset($_POST['veiw_assest'])) {
-        header("location:veiw_assets.php");
-        exit;
     }
 }
 
@@ -58,7 +52,7 @@ echo "<br>";
 echo user_message();//calls the function
 echo "<br>";
 
-$rooms = room_getter(dbconnect_insert(), $_SESSION['house_id']);//getting appoiments from databas
+$rooms = assets_getter(dbconnect_insert(), $_SESSION['room_id']);//getting appoiments from databas
 if(!$rooms){//if there are no appoiments it will tell the user
     echo "no houses found";
 }else{
