@@ -172,3 +172,27 @@ function add_user($conn, $house_id, $role, $longdesc, $user_id)
     $conn = null;
     return true;
 }
+
+function add_room($conn, )
+    {
+        $sql = "INSERT INTO veiws (house_id, longdesc, role, user_id) VALUES(?,?,?,?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue(1, $house_id);
+        $stmt->bindValue(2, $longdesc );
+        $stmt->bindValue(3, $role);
+        $stmt->bindValue(4, $userid);
+
+        $stmt->execute();
+        $conn = null;
+        return true;
+    }
+
+function remove_room($conn, $house_id)
+{
+    $sql = "DELETE FROM house WHERE house_id = ?";
+}
+
+function room_getter($conn, $user_id){
+    $sql = "SELECT * FROM veiws WHERE user_id = ? ORDER BY house_id ASC";
+}
+
