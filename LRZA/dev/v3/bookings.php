@@ -64,23 +64,20 @@ if(!$tickets){//if there are no appoiments it will tell the user
     echo "<table id='bookings'>";//starts a table for bookings
 
     foreach($tickets as $ticket) {// split each appiment to show sepratly and formmat the appoimnet details together
-        if ($ticket['type'] = "con") {//adulet ticket, child ticket, family ticket, educational ticket
-            $type = "consultant";
-        } else if ($ticket['type'] = "inst") {
-            $type = "installer";
-        }
+
 
         echo "<form action='' method='post'>";// creating a form per row of the table for each appinment
 
         echo "<tr>";
-        echo "<td> Date:" . date('M d, Y @ h:i A', $tickets['date']) . "</td>";//using a built in fuction and telling it what format our epoch time should go in for when the apt is
-        echo "<td> type: " . $type . " " . $tickets['type'] . "</td>";//will show the docters surname
-        echo "<td><input type='hidden' name='appid' value='".$tickets['booking_id']."'>
+        echo "<td> Date:" . date('M d, Y @ h:i A', $ticket['date']) . "</td>";//using a built in fuction and telling it what format our epoch time should go in for when the apt is
+        echo "<td> type: " . $ticket['type'] . "</td>";//will show the docters surname
+        echo "<td><input type='hidden' name='appid' value='" . $ticket['booking_id'] . "'>
         <input type='submit' name='appdelete' value='cancel appt' />
         <input type='submit' name='appchange' value='change appt'/></td>";//set the value without needed to input, allows user to submit and change
 
         echo "</tr>";
         echo "</form>";//closes form and table
+
     }
 }
 

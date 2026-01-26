@@ -18,7 +18,7 @@ elseif($_SERVER["REQUEST_METHOD"] == "POST"){
     try {
         $tmp = $_POST["appt_date"] . ' ' . $_POST["appt_time"];//cobines it into a single string with a sigle dat and time
         $epoch_time = strtotime($tmp);//converting to epoc time this passing of the veribale is best practice and minimises issues
-        if(commit_booking(dbconnect_insert(), $epoch_time)){//trys to commit the booking
+        if(commit_booking(dbconnect_insert(), $epoch_time, $_POST["ticket_id"], $_SESSION["user_id"])){//trys to commit the booking
             $_SESSION["usermessage"] = "SUCCESS: your booking has been confirmed";// will send user a message confirming
             header("Location: bookings.php");//sends user to see there bookings
             exit;
@@ -56,8 +56,25 @@ echo "<p>  </p>";//paragh of text to instruct
 
 echo "<br>";// breaks for readability
 echo "<form method='post' action=''>"; //this creates the form
+try {
+    $ticket = ticket_getter(dbconnect_insert());//gets the staff from the database
+}catch (PDOException $e){
+    $_SESSION["usermessage"] = "ERROR: something went wrong";
+}
 
-$staff = ticket_getter(dbconnect_insert());//gets the staff from the database
+
+if(!$ticket){
+    echo "no tickets available!";
+} else {
+    echo "<select name='ticket_select'>";
+    foreach ($ticket as $tickets) {
+        echo "<option value= >". "type: " . $tickets['type'] . "   price: £" . $tickets['price'] . "</option>";
+    }
+
+    echo "</select>";
+}
+
+echo "<br>";
 
 echo "<layble for='appt_time'> Appointment time:</lable>";//allows user to input a appointment time
 echo "<input type='time' name='appt_time' required>";

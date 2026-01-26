@@ -71,7 +71,7 @@ function login($conn, $post)
 
 function ticket_getter($conn){
 
-    $sql = "SELECT ticket_id, type, quantity, price FROM ticket WHERE type != ? ORDER BY role DESC";//sets up SQL stament
+    $sql = "SELECT ticket_id, type, quantity, price FROM ticket ";//sets up SQL stament
     //gets the staff details from the table in decsding order
 
     $stmt = $conn->prepare($sql);//prepares SQL statment
@@ -84,11 +84,11 @@ function ticket_getter($conn){
 }
 
 
-function commit_booking($conn, $epoch){
+function commit_booking($conn, $epoch, $ticket_id, $user_id){
     $sql = "INSERT INTO booking (user_id, ticket_id, date) VALUES(?,?,?)";//inserts the bookinf details into the booking table
     $stmt = $conn->prepare($sql);//prepares sql statment
-    $stmt->bindValue(1, $_SESSION['userid']);//binds values
-    $stmt->bindValue(2, $_POST['ticket_id']);
+    $stmt->bindValue(1, $user_id);//binds values
+    $stmt->bindValue(2, $ticket_id);
     $stmt->bindValue(3, $epoch);//puts in epoch time
 
     $stmt->execute();//exicutes sql statment
@@ -99,7 +99,7 @@ function commit_booking($conn, $epoch){
 
 function appt_getter($conn)
 {
-    $sql = "SELECT b.booking_id, b.date FROM booking b JOIN ticket s ON b.ticket_id = s.ticket_id WHERE b.user_id = ? ORDER BY b.aptdate ASC";
+    $sql = "SELECT b.booking_id, b.date FROM booking b JOIN ticket s ON b.ticket_id = s.ticket_id WHERE b.user_id = ? ORDER BY b.date ASC";
     // selects the feils from the diffrent tables, it gets them from the bookings table which we have labled b and joins the docters table with have labled s
     // and use staff id to link together from each table, where it has the user id that that is being used and this will be pulled and orderd by the appiment date in asending order
     $stmt = $conn->prepare($sql);//prepares the SQL stament
