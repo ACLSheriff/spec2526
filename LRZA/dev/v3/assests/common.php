@@ -83,6 +83,9 @@ function ticket_getter($conn){
 
 }
 
+function ticket_discount($conn, $ticket_id){
+
+}
 
 function commit_booking($conn, $epoch, $ticket_id, $user_id){
     $sql = "INSERT INTO booking (user_id, ticket_id, date) VALUES(?,?,?)";//inserts the bookinf details into the booking table

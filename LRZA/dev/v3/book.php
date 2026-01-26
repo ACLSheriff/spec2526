@@ -18,19 +18,23 @@ elseif($_SERVER["REQUEST_METHOD"] == "POST"){
     try {
         $tmp = $_POST["appt_date"] . ' ' . $_POST["appt_time"];//cobines it into a single string with a sigle dat and time
         $epoch_time = strtotime($tmp);//converting to epoc time this passing of the veribale is best practice and minimises issues
-        if(commit_booking(dbconnect_insert(), $epoch_time, $_POST['ticket_select'], $_SESSION["userid"])){//trys to commit the booking
-            $_SESSION["usermessage"] = "SUCCESS: your booking has been confirmed";// will send user a message confirming
-            header("Location: bookings.php");//sends user to see there bookings
-            exit;
-        }else{
-            $_SESSION["usermessage"] = "ERROR: something went wrong";//error message if the booking cant commit
+        if (ticket_discount(dbconnect_insert(), $_POST['ticket_select'])) {
+            if (commit_booking(dbconnect_insert(), $epoch_time, $_POST['ticket_select'], $_SESSION["userid"])) {//trys to commit the booking
+                $_SESSION["usermessage"] = "SUCCESS: your booking has been confirmed";// will send user a message confirming
+                header("Location: bookings.php");//sends user to see there bookings
+                exit;
+            } else {
+                $_SESSION["usermessage"] = "ERROR: something went wrong";//error message if the booking cant commit
+            }
+        }
+        }
+    catch
+        (PDOException $e) {
+            $_SESSION["usermessage"] = "Error: " . $e->getMessage();//catches any other errors that happen in the prosses
+        } catch(Exception $e) {
+            $_SESSION["usermessage"] = "Error: " . $e->getMessage();
         }
 
-    } catch (PDOException $e) {
-        $_SESSION["usermessage"] = "Error: " . $e->getMessage();//catches any other errors that happen in the prosses
-    } catch(Exception $e) {
-        $_SESSION["usermessage"] = "Error: " . $e->getMessage();
-    }
 }
 
 echo "<!DOCTYPE html>";//required tag
