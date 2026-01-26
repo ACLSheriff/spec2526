@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.2
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Dec 12, 2025 at 02:41 PM
--- Server version: 8.4.3
--- PHP Version: 8.3.26
+-- Host: 127.0.0.1
+-- Generation Time: Jan 26, 2026 at 03:33 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,11 +28,10 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `booking` (
-  `booking_id` int NOT NULL,
-  `user_id` int NOT NULL,
-  `ticket_id` int NOT NULL,
-  `date` int NOT NULL,
-  `discount_id` int NOT NULL
+  `booking_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `ticket_id` int(11) NOT NULL,
+  `date` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -42,9 +41,9 @@ CREATE TABLE `booking` (
 --
 
 CREATE TABLE `discount` (
-  `discount_id` int NOT NULL,
-  `discount_type` text NOT NULL,
-  `discount_amount` int NOT NULL
+  `discount_id` int(11) NOT NULL,
+  `discount_code` text NOT NULL,
+  `discount_amount` decimal(11,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -54,11 +53,21 @@ CREATE TABLE `discount` (
 --
 
 CREATE TABLE `ticket` (
-  `ticket_id` int NOT NULL,
+  `ticket_id` int(11) NOT NULL,
   `type` text NOT NULL,
-  `quantity` int NOT NULL,
-  `price` int NOT NULL
+  `quantity` int(11) NOT NULL,
+  `price` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ticket`
+--
+
+INSERT INTO `ticket` (`ticket_id`, `type`, `quantity`, `price`) VALUES
+(1, 'family', 50, 20),
+(2, 'adult', 40, 7),
+(3, 'child', 60, 5),
+(4, 'educatinal', 2, 50);
 
 -- --------------------------------------------------------
 
@@ -67,7 +76,7 @@ CREATE TABLE `ticket` (
 --
 
 CREATE TABLE `users` (
-  `user_id` int NOT NULL,
+  `user_id` int(11) NOT NULL,
   `firstname` text NOT NULL,
   `surname` text NOT NULL,
   `username` text NOT NULL,
@@ -92,8 +101,7 @@ INSERT INTO `users` (`user_id`, `firstname`, `surname`, `username`, `password`, 
 ALTER TABLE `booking`
   ADD PRIMARY KEY (`booking_id`),
   ADD KEY `user_id` (`user_id`,`ticket_id`),
-  ADD KEY `ticket_id` (`ticket_id`),
-  ADD KEY `discount_id` (`discount_id`);
+  ADD KEY `ticket_id` (`ticket_id`);
 
 --
 -- Indexes for table `discount`
@@ -121,25 +129,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `booking`
 --
 ALTER TABLE `booking`
-  MODIFY `booking_id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `booking_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `discount`
 --
 ALTER TABLE `discount`
-  MODIFY `discount_id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `discount_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `ticket`
 --
 ALTER TABLE `ticket`
-  MODIFY `ticket_id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `ticket_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
@@ -150,8 +158,7 @@ ALTER TABLE `users`
 --
 ALTER TABLE `booking`
   ADD CONSTRAINT `booking_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `booking_ibfk_2` FOREIGN KEY (`ticket_id`) REFERENCES `ticket` (`ticket_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `booking_ibfk_3` FOREIGN KEY (`discount_id`) REFERENCES `discount` (`discount_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `booking_ibfk_2` FOREIGN KEY (`ticket_id`) REFERENCES `ticket` (`ticket_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

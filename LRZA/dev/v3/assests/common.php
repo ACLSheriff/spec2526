@@ -83,7 +83,7 @@ function ticket_getter($conn){
 
 }
 
-function ticket_discount($conn, $ticket_id){
+function ticket_discount($conn, $type){
 
 }
 

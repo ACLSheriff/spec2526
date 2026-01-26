@@ -18,7 +18,7 @@ elseif($_SERVER["REQUEST_METHOD"] == "POST"){
     try {
         $tmp = $_POST["appt_date"] . ' ' . $_POST["appt_time"];//cobines it into a single string with a sigle dat and time
         $epoch_time = strtotime($tmp);//converting to epoc time this passing of the veribale is best practice and minimises issues
-        if (ticket_discount(dbconnect_insert(), $_POST['ticket_select'])) {
+        if (ticket_discount(dbconnect_insert(), $_POST['type'])) {
             if (commit_booking(dbconnect_insert(), $epoch_time, $_POST['ticket_select'], $_SESSION["userid"])) {//trys to commit the booking
                 $_SESSION["usermessage"] = "SUCCESS: your booking has been confirmed";// will send user a message confirming
                 header("Location: bookings.php");//sends user to see there bookings
@@ -90,6 +90,8 @@ echo "<br>";
 echo "<layble for='appt_date'> Appointment date:</lable>";//allows user to input the appointment date
 echo "<input type='date' name='appt_date' required>";
 echo "<br>";
+
+
 
 //echo "<td><input type='hidden' name='ticket_id' value=".$tickets['ticket_id'].">";
 echo "<input type='submit' name='submit' value='Book'>";//allows them to submit and book appoinment
