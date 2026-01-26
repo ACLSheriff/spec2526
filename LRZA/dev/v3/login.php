@@ -67,7 +67,7 @@ echo "<form method='post' action=''>"; //this creates the form
 
 echo "<input type='text' name='username' placeholder='username' </input>";//allows intput into form
 echo "<br>";
-echo "<input type='text' name='password' placeholder='password' </input>";
+echo "<input type='password' name='password' placeholder='password' </input>";
 echo "<br>";
 echo "<input type='submit' name='submit' value='submit' />";//submit button for form
 
