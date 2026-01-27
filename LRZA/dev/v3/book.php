@@ -18,8 +18,12 @@ elseif($_SERVER["REQUEST_METHOD"] == "POST"){
     try {
         $tmp = $_POST["appt_date"] . ' ' . $_POST["appt_time"];//cobines it into a single string with a sigle dat and time
         $epoch_time = strtotime($tmp);//converting to epoc time this passing of the veribale is best practice and minimises issues
-        if (ticket_discount(dbconnect_insert(), $_POST['type'])) {
-            if (commit_booking(dbconnect_insert(), $epoch_time, $_POST['ticket_select'], $_SESSION["userid"])) {//trys to commit the booking
+        $disc_code = ticket_discount(dbconnect_insert(), $_POST['discount_code']);
+        if (!$disc_code) {
+            $_SESSION["usermessage"] = "ERROR: discount not valid";
+            header("Location: book.php");
+        }else{
+            if (commit_booking(dbconnect_insert(), $epoch_time, $_POST['ticket_select'], $_SESSION["userid"], $disc_code)) {//trys to commit the booking
                 $_SESSION["usermessage"] = "SUCCESS: your booking has been confirmed";// will send user a message confirming
                 header("Location: bookings.php");//sends user to see there bookings
                 exit;
@@ -92,6 +96,7 @@ echo "<input type='date' name='appt_date' required>";
 echo "<br>";
 
 
+echo "<input type='text' name='discount_code' placeholder='discount code' </input>";
 
 //echo "<td><input type='hidden' name='ticket_id' value=".$tickets['ticket_id'].">";
 echo "<input type='submit' name='submit' value='Book'>";//allows them to submit and book appoinment
