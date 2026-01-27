@@ -142,6 +142,55 @@ function bookings_getter($conn)
 
 }
 
+function check_avalible($conn, $amount, $epoch_date, $ticket_id)
+{
+
+
+    $sql = "SELECT quantity FROM ticket WHERE ticket_id = ?";
+
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);;
+    $available = $result['quantity'];
+
+
+    $avalible_return = false;
+
+
+    $sql = "SELECT * FROM booking WHERE ticket_id = ? AND date = ?";//sets up SQL stament
+
+        //gets the staff details from the table in decsding order
+
+        $stmt = $conn->prepare($sql);//prepares SQL statment
+
+        $stmt->bindValue(1,$ticket_id);//binds value
+        $stmt->bindValue(1,$epoch_date);//binds value
+
+        $stmt->execute(); //run the query to insert
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $conn = null;  // close the connection so cant be abused
+
+        if(!$result){
+            if($available >= $amount){
+                $avalible_return = true;
+            } elseif($available < $amount){
+                $avalible_return = false;
+            }
+
+        } else {
+            $totalsold = $amount;
+            foreach ($result as $sold){
+                $totalsold= $totalsold+$sold['amount'];
+            }
+            if($totalsold <= $available){
+                $avalible_return = true;
+            } elseif($totalsold > $available){
+                $avalible_return = false;
+            }
+
+        }
+
+    return $avalible_return;
+
+}
 
 function cancel_booking($conn, $bookid)
 {
@@ -157,7 +206,7 @@ function cancel_booking($conn, $bookid)
 
 }
 
-function fetch_appt($conn, $booking_id)
+function fetch_ticket($conn, $booking_id)
 {
     $sql = "SELECT * FROM booking WHERE booking_id = ?";//gets the bookings infomation
     $stmt = $conn->prepare($sql);//prepares SQL statment
@@ -170,7 +219,7 @@ function fetch_appt($conn, $booking_id)
     return $result;//returns the booking info result
 }
 
-function appt_update($conn, $booking_id, $apt_time)
+function ticket_update($conn, $booking_id, $apt_time)
 {
     $sql = "UPDATE booking SET staff_id = ?, aptdate = ? WHERE booking_id = ?";//update bookings and resets the staff and appoimnet date
     $stmt = $conn->prepare($sql);//prepares stament

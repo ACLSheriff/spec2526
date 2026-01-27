@@ -16,20 +16,25 @@ elseif($_SERVER["REQUEST_METHOD"] == "POST"){
 //this should be here so if there is a use of headers it can be done so the rest of teh code dosnt load so teh headers will work and change page without errors becuse the header has loaded
 
     try {
-        $tmp = $_POST["appt_date"] . ' ' . $_POST["appt_time"];//cobines it into a single string with a sigle dat and time
+        $tmp = $_POST["date"] ;//cobines it into a single string with a sigle dat and time
         $epoch_time = strtotime($tmp);//converting to epoc time this passing of the veribale is best practice and minimises issues
         $disc_code = ticket_discount(dbconnect_insert(), $_POST['discount_code']);
         if (!$disc_code) {
             $_SESSION["usermessage"] = "ERROR: discount not valid";
             header("Location: book.php");
         }else{
-            $avaliblity = check_avalible(dbconnect_insert(), $_POST['amount'], $_POST['type']);
-            if (commit_booking(dbconnect_insert(), $epoch_time, $_POST['ticket_select'], $_SESSION["userid"], $disc_code, $_POST['amount'])) {//trys to commit the booking
-                $_SESSION["usermessage"] = "SUCCESS: your booking has been confirmed";// will send user a message confirming
-                header("Location: bookings.php");//sends user to see there bookings
-                exit;
-            } else {
-                $_SESSION["usermessage"] = "ERROR: something went wrong";//error message if the booking cant commit
+            $avaliblity = check_avalible(dbconnect_insert(), $_POST['amount'], $epoch_time, $_POST['ticket_id']);
+            if (!$avaliblity) {
+                $_SESSION["usermessage"] = "ERROR: avaliblity not valid";
+                header("Location: book.php");
+            }else {
+                if (commit_booking(dbconnect_insert(), $epoch_time, $_POST['ticket_select'], $_SESSION["userid"], $disc_code, $_POST['amount'])) {//trys to commit the booking
+                    $_SESSION["usermessage"] = "SUCCESS: your booking has been confirmed";// will send user a message confirming
+                    header("Location: bookings.php");//sends user to see there bookings
+                    exit;
+                } else {
+                    $_SESSION["usermessage"] = "ERROR: something went wrong";//error message if the booking cant commit
+                }
             }
         }
         }
@@ -92,12 +97,8 @@ echo "<input type='number' name='amount' placeholder='amount of ticket' </input>
 echo "<br>";
 
 
-echo "<layble for='appt_time'> Appointment time:</lable>";//allows user to input a appointment time
-echo "<input type='time' name='appt_time' required>";
-echo "<br>";
 
-
-echo "<layble for='appt_date'> Appointment date:</lable>";//allows user to input the appointment date
+echo "<layble for='date'> Appointment date:</lable>";//allows user to input the appointment date
 echo "<input type='date' name='appt_date' required>";
 echo "<br>";
 
@@ -107,7 +108,7 @@ echo "<input type='text' name='discount_code' placeholder='discount code' </inpu
 echo "<br>";
 
 //echo "<td><input type='hidden' name='ticket_id' value=".$tickets['ticket_id'].">";
-echo "<input type='submit' name='submit' value='Book'>";//allows them to submit and book appoinment
+echo "<input type='submit' name='submit' value='Check avalibility and Book'>";//allows them to submit and book appoinment
 
 echo "</form>";//end form
 

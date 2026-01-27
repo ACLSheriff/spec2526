@@ -16,7 +16,7 @@ if (!isset($_SESSION['userid'])) {//if the user id is not set
 //this should be here so if there is a use of headers it can be done so the rest of teh code dosnt load so teh headers will work and change page without errors becuse the header has loaded
     if (isset($_POST['delete'])) {//if they are deleteing an appoitment
         try {
-            if (cancel_appt(dbconnect_insert(), $_POST['bookingid'])) {//it will call function to cancel appoinmet
+            if (cancel_booking(dbconnect_insert(), $_POST['bookingid'])) {//it will call function to cancel appoinmet
                 $_SESSION['message'] = "appointment has been cancelled.";// send message to print saying its been cancelled
             } else {
                 $_SESSION['message'] = "appointment could not be cancelled.";//prints that the appoiment could not be cancled if there is an issue
@@ -28,7 +28,7 @@ if (!isset($_SESSION['userid'])) {//if the user id is not set
         }
     }elseif(isset($_POST['change'])){//if they want to change the appoimnet
         $_SESSION['apptid'] = $_POST['bookingid'];//puts the appointment id in post
-        header("location:change_booking.php");//sends the user to the change booking page
+        header("location:change_ticket.php");//sends the user to the change booking page
         exit;//exits page
     }
 }
@@ -69,7 +69,7 @@ if(!$tickets){//if there are no appoiments it will tell the user
         echo "<form action='' method='post'>";// creating a form per row of the table for each appinment
 
         echo "<tr>";
-        echo "<td> Date:" . date('M d, Y @ h:i A', $ticket['date']) . "</td>";//using a built in fuction and telling it what format our epoch time should go in for when the apt is
+        echo "<td> Date:" . date('M d, Y ', $ticket['date']) . "</td>";//using a built in fuction and telling it what format our epoch time should go in for when the apt is
         echo "<td> type: " . $ticket['type'] . "</td>";//will show the docters surname
         echo "<td> overall price: " . $price . "</td>";
         echo "<td> amount: " . $ticket['amount'] . "</td>";
