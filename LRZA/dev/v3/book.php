@@ -23,7 +23,8 @@ elseif($_SERVER["REQUEST_METHOD"] == "POST"){
             $_SESSION["usermessage"] = "ERROR: discount not valid";
             header("Location: book.php");
         }else{
-            if (commit_booking(dbconnect_insert(), $epoch_time, $_POST['ticket_select'], $_SESSION["userid"], $disc_code)) {//trys to commit the booking
+            $avaliblity = check_avalible(dbconnect_insert(), $_POST['amount'], $_POST['type']);
+            if (commit_booking(dbconnect_insert(), $epoch_time, $_POST['ticket_select'], $_SESSION["userid"], $disc_code, $_POST['amount'])) {//trys to commit the booking
                 $_SESSION["usermessage"] = "SUCCESS: your booking has been confirmed";// will send user a message confirming
                 header("Location: bookings.php");//sends user to see there bookings
                 exit;
@@ -86,6 +87,11 @@ if(!$ticket){
 
 echo "<br>";
 
+echo "<input type='number' name='amount' placeholder='amount of ticket' </input>";
+
+echo "<br>";
+
+
 echo "<layble for='appt_time'> Appointment time:</lable>";//allows user to input a appointment time
 echo "<input type='time' name='appt_time' required>";
 echo "<br>";
@@ -96,7 +102,9 @@ echo "<input type='date' name='appt_date' required>";
 echo "<br>";
 
 
+
 echo "<input type='text' name='discount_code' placeholder='discount code' </input>";
+echo "<br>";
 
 //echo "<td><input type='hidden' name='ticket_id' value=".$tickets['ticket_id'].">";
 echo "<input type='submit' name='submit' value='Book'>";//allows them to submit and book appoinment

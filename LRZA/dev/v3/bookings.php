@@ -14,9 +14,9 @@ if (!isset($_SESSION['userid'])) {//if the user id is not set
 
 } elseif($_SERVER["REQUEST_METHOD"] == "POST") {//when form is submitted
 //this should be here so if there is a use of headers it can be done so the rest of teh code dosnt load so teh headers will work and change page without errors becuse the header has loaded
-    if (isset($_POST['appdelete'])) {//if they are deleteing an appoitment
+    if (isset($_POST['delete'])) {//if they are deleteing an appoitment
         try {
-            if (cancel_appt(dbconnect_insert(), $_POST['appid'])) {//it will call function to cancel appoinmet
+            if (cancel_appt(dbconnect_insert(), $_POST['bookingid'])) {//it will call function to cancel appoinmet
                 $_SESSION['message'] = "appointment has been cancelled.";// send message to print saying its been cancelled
             } else {
                 $_SESSION['message'] = "appointment could not be cancelled.";//prints that the appoiment could not be cancled if there is an issue
@@ -26,8 +26,8 @@ if (!isset($_SESSION['userid'])) {//if the user id is not set
         } catch (Exception $e) {
             $_SESSION['message'] = "ERROR: " . $e->getMessage();
         }
-    }elseif(isset($_POST['appchange'])){//if they want to change the appoimnet
-        $_SESSION['apptid'] = $_POST['appid'];//puts the appointment id in post
+    }elseif(isset($_POST['change'])){//if they want to change the appoimnet
+        $_SESSION['apptid'] = $_POST['bookingid'];//puts the appointment id in post
         header("location:change_booking.php");//sends the user to the change booking page
         exit;//exits page
     }
@@ -56,7 +56,7 @@ echo "<br>";
 echo user_message();//calls the function
 echo "<br>";
 
-$tickets = ticket_getter(dbconnect_insert());//getting appoiments from database
+$tickets = bookings_getter(dbconnect_insert());//getting appoiments from database
 if(!$tickets){//if there are no appoiments it will tell the user
     echo "no bookings found";
 }else{
@@ -64,17 +64,18 @@ if(!$tickets){//if there are no appoiments it will tell the user
     echo "<table id='bookings'>";//starts a table for bookings
 
     foreach($tickets as $ticket) {// split each appiment to show sepratly and formmat the appoimnet details together
-        $price = $ticket['price'] * $ticket['discount_amount'];
+        $price = ($ticket['price'] * $ticket['discount_amount']) * $ticket['amount'];
 
         echo "<form action='' method='post'>";// creating a form per row of the table for each appinment
 
         echo "<tr>";
         echo "<td> Date:" . date('M d, Y @ h:i A', $ticket['date']) . "</td>";//using a built in fuction and telling it what format our epoch time should go in for when the apt is
         echo "<td> type: " . $ticket['type'] . "</td>";//will show the docters surname
-        echo "<td> overall price: " . $ticket['price'] . "</td>";
-        echo "<td><input type='hidden' name='appid' value='" . $ticket['booking_id'] . "'>
-        <input type='submit' name='appdelete' value='cancel appt' />
-        <input type='submit' name='appchange' value='change appt'/></td>";//set the value without needed to input, allows user to submit and change
+        echo "<td> overall price: " . $price . "</td>";
+        echo "<td> amount: " . $ticket['amount'] . "</td>";
+        echo "<td><input type='hidden' name='bookingid' value='" . $ticket['booking_id'] . "'>
+        <input type='submit' name='delete' value='cancel ticket' />
+        <input type='submit' name='change' value='change ticket'/></td>";//set the value without needed to input, allows user to submit and change
 
         echo "</tr>";
         echo "</form>";//closes form and table
