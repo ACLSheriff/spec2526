@@ -24,7 +24,7 @@ elseif($_SERVER["REQUEST_METHOD"] == "POST"){
             $_SESSION["usermessage"] = "ERROR: avaliblity not valid";
             header("Location: book.php");
         } else {
-            if (ticket_update(dbconnect_insert(), $epoch_date, $_POST['ticket_select'], $_SESSION["userid"], $disc_code, $_POST['amount'])) {//trys to commit the booking
+            if (ticket_update(dbconnect_insert(), $epoch_date, $_POST['ticket_select'], $_POST['amount'])) {//trys to commit the booking
                 $_SESSION["usermessage"] = "SUCCESS: your booking has been confirmed";// will send user a message confirming
                 header("Location: bookings.php");//sends user to see there bookings
                 exit;

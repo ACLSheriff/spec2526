@@ -67,6 +67,32 @@ function login($conn, $post)
 }
 
 
+function auditor($conn, $userid, $code, $long){  # on doing any action, auditor is called and the action recorded
+    $sql = "INSERT INTO auditor (userid,code, longdesc, dateon) VALUES (?, ?, ?, ?)";  //prepare the sql to be sent
+    $stmt = $conn->prepare($sql); //prepare to sql
+
+    $stmt->bindParam(1, $userid);
+    $stmt->bindParam(2, $code);
+    $stmt->bindParam(3, $long);
+    $happenedon = time();
+    $stmt->bindParam(4, $happenedon);  //bind parameters for security
+
+    $stmt->execute();  //run the query to insert
+    $conn = null;  // closes the connection so cant be abused.
+    return true; // Registration successful
+}
+
+
+function getnewuserid($conn, $username){  # upon registering, retrieves the userid from the system to audit.
+    $sql = "SELECT user_id FROM users WHERE username = ?"; //set up the sql statement
+    $stmt = $conn->prepare($sql); //prepares
+    $stmt->bindParam(1, $username);
+    $stmt->execute(); //run the sql code
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);  //brings back results
+    return $result["userid"];
+}
+
+
 function gift_getter($conn){
 
     $sql = "SELECT gift_id, brand, about FROM gifts ORDER BY brand DESC";//sets up SQL stament
@@ -93,7 +119,23 @@ function add_gift($conn, $post){
 }
 
 
-function add_wish($conn){
+function get_new_gift($conn){//gets the gift that was just added to the database
+    $sql = "SELECT * FROM gifts ORDER BY gift_id DESC LIMIT 1";//gets all the coloums from gift and orders it in desceding order so the first item is the most recent add and it only then takes the first row/ last added item
+
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);  //brings back results
+    $conn = null;
+    if($result){
+        return $result;
+    } else {
+        return false;
+    }
+}
+
+
+
+function add_wish($conn, $giftid, $userid){
     $sql = "INSERT INTO wishlist (gift_id,user_id,date ) VALUES(?,?,?)";//inserts the bookinf details into the booking table
     $stmt = $conn->prepare($sql);//prepares sql statment
     $stmt->bindValue(1,$_SESSION['userid']);//binds value
@@ -122,4 +164,14 @@ function wishlist_getter($conn)
         return false;//otherwise we can return false
     }
 
+}
+
+
+function remove_wish($conn,$wish_id){
+    $sql = "DELETE FROM wishlist WHERE wish_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(1, $wish_id);
+    $stmt->execute();
+    $conn = null;
+    return true;
 }

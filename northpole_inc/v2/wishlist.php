@@ -14,25 +14,77 @@ if (!isset($_SESSION['userid'])) {//if the user id is not set
 
 } elseif($_SERVER["REQUEST_METHOD"] == "POST") {//when form is submitted
 //this should be here so if there is a use of headers it can be done so the rest of teh code dosnt load so teh headers will work and change page without errors becuse the header has loaded
-    if (isset($_POST['giftdelete'])) {//if they are deleteing an appoitment
-        try {
-            if (cancel_appt(dbconnect_insert(), $_POST['appid'])) {//it will call function to cancel appoinmet
-                $_SESSION['message'] = "appointment has been cancelled.";// send message to print saying its been cancelled
+    if(isset($_POST['addgift'])){  // if they have clicked to wish for a gift
+        try{
+            if(add_wish(dbconnect(), $_POST['gift_select'], $_SESSION["userid"])){  // try to cancel it
+                auditor(dbconnect(), $_SESSION['userid'], "WGT", "Wished for a new gift");  // audit the cancellation
+                $_SESSION['usermessage'] = "SUCCESS: You have wished for a new gift";  // Sets a user message
+                header('Location: wishlist.php');  // redirects them
+                exit;  // ensures no other code executes
             } else {
-                $_SESSION['message'] = "appointment could not be cancelled.";//prints that the appoiment could not be cancled if there is an issue
+                $_SESSION['usermessage'] = "ERROR: Something went wrong!";
+                header('Location: wishlist.php');  // redirects them
+                exit;  // ensures no other code executes
             }
-        } catch (PDOException $e) {
-            $_SESSION['message'] = "ERROR: " . $e->getMessage();//catches an other errors that occur
-        } catch (Exception $e) {
-            $_SESSION['message'] = "ERROR: " . $e->getMessage();
-        }
-    }elseif(isset($_POST['giftadd'])){//if they want to change the appoimnet
-        $_SESSION['giftid'] = $_POST['appid'];//puts the appointment id in post
 
-        exit;//exits page
+        } catch(PDOException $e) {
+            $_SESSION['message'] = "ERROR: ".$e->getMessage();
+            header('Location: wishlist.php');  // redirects them
+            exit;  // ensures no other code executes
+        } catch (Exception $e){
+            $_SESSION['message'] = "ERROR: ".$e->getMessage();
+            header('Location: wishlist.php');  // redirects them
+            exit;  // ensures no other code executes
+        }
+    } elseif (isset($_POST['giftaddandwish'])) {  // if the change appointment button was used
+        try{
+            if(add_gift(dbconnect())){
+                $giftid = get_new_gift(dbconnect());
+                if(add_wish(dbconnect(), $giftid['giftid'], $_SESSION["userid"])){
+                    auditor(dbconnect(),$_SESSION['userid'],"GRG", "Registered a new gift to the system");
+                    auditor(dbconnect(), $_SESSION['userid'], "WGT", "Wished for a new gift");  // audit the cancellation
+                    $_SESSION['usermessage'] = "SUCCESS: You have wished for a new gift";  // Sets a user message
+                    header('Location: wishlist.php');  // redirects them
+                    exit;  // ensures no other code executes
+                } else {
+                    $_SESSION['usermessage'] = "ERROR: Something went wrong!";
+                    header('Location: wishlist.php');  // redirects them
+                    exit;  // ensures no other code executes
+                }
+            }
+        } catch(PDOException $e) {
+            $_SESSION['message'] = "ERROR: ".$e->getMessage();
+            header('Location: wishlist.php');  // redirects them
+            exit;  // ensures no other code executes
+        } catch (Exception $e){
+            $_SESSION['message'] = "ERROR: ".$e->getMessage();
+            header('Location: wishlist.php');  // redirects them
+            exit;  // ensures no other code executes
+        }
+
+    }elseif(isset($_POST['wishdelete'])){
+        try{
+            if(remove_wish(dbconnect(),$_POST['wishid'])){
+                auditor(dbconnect(),$_SESSION['userid'],"removeWish", "removed wished item");
+                $_SESSION['usermessage'] = "SUCCESS: You have removed a wished gift";  // Sets a user message
+                header('Location: wishlist.php');  // redirects them
+                exit;  // ensures no other code executes
+            } else {
+                $_SESSION['usermessage'] = "ERROR: Something went wrong!";
+                header('Location: wishlist.php');  // redirects them
+                exit;  // ensures no other code executes
+            }
+        } catch(PDOException $e) {
+            $_SESSION['message'] = "ERROR: ".$e->getMessage();
+            header('Location: wishlist.php');  // redirects them
+            exit;  // ensures no other code executes
+        } catch (Exception $e){
+            $_SESSION['message'] = "ERROR: ".$e->getMessage();
+            header('Location: wishlist.php');  // redirects them
+            exit;  // ensures no other code executes
+        }
     }
 }
-
 echo "<!DOCTYPE html>";//required tag
 echo "<html>";//opens page content
 echo "<head>";//opens the head of the code
@@ -74,12 +126,29 @@ if(!$gifts){
 } else {
     echo "<select name='gift_select'>";
     foreach ($gifts as $gift) {
-        echo "<option value='" . $gift['brand'] . "'>" . $gift['about'] . "</option>";
+        echo "<option value=" . $gift['giftid'] . "'>" . $gift['brand'] . " - " . $gift['about'] . "</option>";
     }
 
     echo "</select>";
 }
-echo "<input type='submit' name='giftadd' value='add a gift'/>";
+
+
+echo"<input type='submit' name='addgift' value='Wish for gift' />";
+
+echo "</form>";
+echo "<br>";
+echo "<h3> Add a gift and wishlist it:</h3>";  # sets a h2 heading as a welcome
+echo "<form action='' method='post'>";
+echo "<input type='text' name='brand' placeholder='Gift brand or name' required/>";
+echo "<input type='text' name='about' placeholder='Gift Details' required/>";
+
+echo"<input type='submit' name='giftaddandwish' value='add a gift' />";
+
+echo "</form>";
+
+
+echo "</div>";
+
 
 
 echo "<br>";
@@ -106,6 +175,8 @@ if(!$wishes){//if there are no appoiments it will tell the user
         echo "</form>";//closes form and table
 
 }
+
+
 
 echo "<br>";
 echo "<br>";

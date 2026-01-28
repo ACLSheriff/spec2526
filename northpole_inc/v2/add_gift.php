@@ -19,6 +19,7 @@ if (!isset($_SESSION['userid'])) {//if the user id is not set stops them accessi
         $tmp = $_POST["apt_date"] . ' ' . $_POST["apt_time"];//cobines it into a single string with a sigle dat and time
         $epoch_time = strtotime($tmp);//converting to epoc time this passing of the veribale is best practice and minimises issues
         if (appt_update(dbconnect_insert(), $_SESSION['apptid'], $epoch_time)) {//trys to update appoiment and change in database
+            auditor(dbconnect(),$_SESSION['userid'],"GRG", "Registered a new gift to the system");
             $_SESSION["usermessage"] = "SUCCESS: your gift has been added";//user message telling them that the appoimnet was changed
             header("Location: wishlist.php");// sends back to booking page
             exit;

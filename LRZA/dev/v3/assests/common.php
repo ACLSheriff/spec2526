@@ -219,13 +219,13 @@ function fetch_ticket($conn, $booking_id)
     return $result;//returns the booking info result
 }
 
-function ticket_update($conn, $booking_id, $apt_time)
+function ticket_update($conn, $ticket_id, $date, $amount)
 {
-    $sql = "UPDATE booking SET staff_id = ?, aptdate = ? WHERE booking_id = ?";//update bookings and resets the staff and appoimnet date
+    $sql = "UPDATE booking SET ticket_id = ?, date = ?, amount = ? WHERE booking_id = ?";//update bookings and resets the staff and appoimnet date
     $stmt = $conn->prepare($sql);//prepares stament
-    $stmt->bindParam(1, $_POST['staff']);//binds paramiters that have been changed by user
-    $stmt->bindParam(2, $apt_time);
-    $stmt->bindParam(3, $booking_id);
+    $stmt->bindParam(1, $ticket_id);//binds paramiters that have been changed by user
+    $stmt->bindParam(2, $date);
+    $stmt->bindParam(3, $amount);
     $stmt->execute();//exitutes and runs query
     $conn = null;// closes connection
     return true;
