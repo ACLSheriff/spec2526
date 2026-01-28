@@ -17,25 +17,30 @@ elseif($_SERVER["REQUEST_METHOD"] == "POST"){
 //this should be here so if there is a use of headers it can be done so the rest of teh code dosnt load so teh headers will work and change page without errors becuse the header has loaded
 
     try {
-        $tmp = $_POST["appt_date"] . ' ' . $_POST["appt_time"];//cobines it into a single string with a sigle dat and time
-        $epoch_time = strtotime($tmp);//converting to epoc time this passing of the veribale is best practice and minimises issues
-        if(appt_update(dbconnect_insert(),$_SESSION['apptid'], $epoch_time)){//trys to update appoiment and change in database
-            $_SESSION["usermessage"] = "SUCCESS: your booking has been confirmed";//user message telling them that the appoimnet was changed
-            auditor(dbconnect_insert(),$_SESSION['userid'],"log", "user has changed an appointment". $_SESSION['userid']);//audits that the user has changed an appoimnet
-            header("Location: booking.php");// sends back to booking page
-            exit;
-        }else{
-            $_SESSION["usermessage"] = "ERROR: something went wrong";// error message if it cant be changed
-            header("Location: booking.php");//sends back to booking page
-            exit;
+        $tmp = $_POST["date"];//cobines it into a single string with a sigle dat and time
+        $epoch_date = strtotime($tmp);//converting to epoc time this passing of the veribale is best practice and minimises issues
+        $avaliblity = check_avalible(dbconnect_insert(), $_POST['amount'], $epoch_date, $_POST['ticket_id']);
+        if (!$avaliblity) {
+            $_SESSION["usermessage"] = "ERROR: avaliblity not valid";
+            header("Location: book.php");
+        } else {
+            if (ticket_update(dbconnect_insert(), $epoch_date, $_POST['ticket_select'], $_SESSION["userid"], $disc_code, $_POST['amount'])) {//trys to commit the booking
+                $_SESSION["usermessage"] = "SUCCESS: your booking has been confirmed";// will send user a message confirming
+                header("Location: bookings.php");//sends user to see there bookings
+                exit;
+            } else {
+                $_SESSION["usermessage"] = "ERROR: something went wrong";//error message if the booking cant commit
+            }
         }
-
-    } catch (PDOException $e) {
-        $_SESSION["usermessage"] = "Error: " . $e->getMessage();//catches any other errors
+    }catch
+    (PDOException $e) {
+        $_SESSION["usermessage"] = "Error: " . $e->getMessage();//catches any other errors that happen in the prosses
     } catch(Exception $e) {
         $_SESSION["usermessage"] = "Error: " . $e->getMessage();
     }
+
 }
+
 
 echo "<!DOCTYPE html>";//required tag
 echo "<html>";//opens page content
@@ -56,44 +61,49 @@ echo "<div class='content'>";// this class is a box that i can put content for m
 
 echo "<h2> Change booking </h2>";//heading
 
-$appt = fetch_appt(dbconnect_insert(), $_SESSION["apptid"]);//gets the appoimnet id and stores in veriable
+$booking = fetch_ticket(dbconnect_insert(), $_SESSION["bookingid"]);//gets the appoimnet id and stores in veriable
 
 echo "<br>";// breaks for readability
 echo "<form method='post' action=''>"; //this creates the form
 
-$staff = staff_getter(dbconnect_insert());//gets the staff
-
-$apt_time = date('H:i', $appt['aptdate']);//formatts the epoc time they origonly had
-$apt_date = date('Y-m-d', $appt['aptdate']);//formatts the epoc date they had
-
-echo "<layble for='appt_time'> Appointment time:</lable>";//shows the appoimnet time
-echo "<input type='time' name='appt_time'  value='".$apt_time."' required>";//pulled in data from database and showing user what they have picked
-echo "<br>";
-
-
-echo "<layble for='appt_date'> Appointment date:</lable>";//shows appoimnet date
-echo "<input type='date' name='appt_date'value='".$apt_date."' required>";//pulls from database showing the user what date they picked
-echo "<br>";
-echo "<select name='staff'>";//allows user to see and select staff
-
-foreach ($staff as $staf){//gose throgh each staff getting there role of docter or nurse
-    if($staf["role"] == "doc"){
-        $role = "doctor";
-    }else if ($staf["role"] == "nur"){
-        $role = "nurse";
-    }
-    if($appt['staff_id'] == $staf["staff_id"]){//shows the staff they have selected
-        $selected = "selected";
-    }else{
-        $selected = "";
-    }
-    echo "<option value='".$staf["staff_id"]." '>".$selected." ".$role. " ".$staf["surname"]. " Room ".$staf["room"]."</option>";//formmatts staff details so you can see there surname, and room number
+try {
+    $ticket = ticket_getter(dbconnect_insert());//gets the staff from the database
+}catch (PDOException $e){
+    $_SESSION["usermessage"] = "ERROR: something went wrong";
 }
-echo "</select>";
+
+
+if(!$ticket){
+    echo "no tickets available!";
+} else {
+
+    echo "<select name='ticket_select'>";
+    foreach ($ticket as $tickets) {
+        echo "<option value=" . $tickets['ticket_id'] . ">". "type: " . $tickets['type'] . "   price: £" . $tickets['price'] . "</option>";
+        echo $tickets['ticket_id'];
+    }
+
+    echo "</select>";
+}
 
 echo "<br>";
 
-echo "<input type='submit' name='submit' value='Update Appointment'>";//allows user to update appoimnet
+
+echo "<layble for='amount'> amount:</lable>";//shows appoimnet date
+echo "<input type='number' name='amount' value='".$booking["amount"]."' required>";
+
+echo "<br>";
+
+
+$date = date('Y-m-d', $booking['date']);//formatts the epoc date they had
+
+
+echo "<layble for='date'> date:</lable>";//shows appoimnet date
+echo "<input type='date' name='date' value='".$date."' required>";//pulls from database showing the user what date they picked
+echo "<br>";
+
+
+echo "<input type='submit' name='submit' value='Update ticket'>";//allows user to update appoimnet
 
 echo "</form>";//end form
 
