@@ -15,6 +15,10 @@ if (!isset($_SESSION['userid'])) {//if the user id is not set
 elseif($_SERVER["REQUEST_METHOD"] == "POST"){
 //this should be here so if there is a use of headers it can be done so the rest of teh code dosnt load so teh headers will work and change page without errors becuse the header has loaded
 
+    $_POST['amount'] = htmlspecialchars($_POST['amount'], ENT_QUOTES, 'UTF-8');
+    $_POST['discount_code'] = htmlspecialchars($_POST['discount_code'], ENT_QUOTES, 'UTF-8');
+
+
     try {
         $epoch = strtotime($_POST['date']);//converting to epoc time this passing of the veribale is best practice and minimises issues
         $disc_code = ticket_discount(dbconnect_insert(), $_POST['discount_code']);
