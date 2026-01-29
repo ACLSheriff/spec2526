@@ -130,11 +130,11 @@ function house_getter($conn, $user_id)
     }
 }
 
-function get_users($conn)
+function get_users($conn, $house_id)
     {
         $sql = "SELECT * FROM users WHERE house_id = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bindValue(1, $_SESSION['userid']);
+        $stmt->bindValue(1, $house_id);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $conn = null;

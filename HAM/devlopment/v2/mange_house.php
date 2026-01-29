@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {//verifys the function
 
     if (isset($_POST['add_user'])) {//if they are deleteing an appoitment
         try {
-            if (add_user(dbconnect_insert(), $_POST['house_id'], $_POST['role'], $_POST['longdesc'], $user['user_id'])) {//it will call function to cancel appoinmet
+            if (add_user(dbconnect_insert(), $_POST['house_id'], $_POST['role'], $_POST['longdesc'], $user['user_select'])) {//it will call function to cancel appoinmet
                 $_SESSION['message'] = "appointment has been cancelled.";// send message to print saying its been cancelled
             } else {
                 $_SESSION['message'] = "appointment could not be cancelled.";//prints that the appoiment could not be cancled if there is an issue
@@ -79,13 +79,13 @@ echo "<td><input type='hidden' name='appid' value='" . $detail['house_id'] . "'>
 
 if ($detail['role'] == "owner") {
     echo "<tr>";
-    $users = get_users(dbconnect_insert());
+    $users = get_users(dbconnect_insert(), $_SESSION['house_id']);
         if(!$details){
             echo "no users available!";
         } else {
-            echo "<select name='gift_select'>";
+            echo "<select name='user_select'>";
             foreach ($users as $user) {
-                echo "<option value='" . $user['firstname'] . "'>" . $user['surname'] . "</option>";
+                echo "<option value=" . $user['user_id'] . ">" . $user['firstname'] . "'>" . $user['surname'] . "</option>";
             }
 
             echo "</select>";
