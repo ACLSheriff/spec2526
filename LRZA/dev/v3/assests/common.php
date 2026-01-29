@@ -69,6 +69,23 @@ function login($conn, $post)
 }
 
 
+function auditor($conn, $userid, $code, $long)
+{
+    $sql = "INSERT INTO audit (user_id,longdesc,code, date) VALUES(?,?,?,?)";//is an SQL quary that will insert the data into each coloum of the table
+    $stmt = $conn->prepare($sql);  //prepare the SQL
+    $date = date("Y-m-d"); //this is the the structer a my sQl feild works and accespts
+    $stmt->bindValue(1, $userid);  //bind paramiters for security
+    $stmt->bindValue(2, $long);
+    $stmt->bindValue(3, $code);
+    $stmt->bindValue(4, $date);
+
+    $stmt->execute(); //run the query to insert
+    $conn = null;  // close the connection so cant be abused
+    return true;  // registration successful
+
+}
+
+
 function ticket_getter($conn){
 
     $sql = "SELECT ticket_id, type, quantity, price FROM ticket ";//sets up SQL stament

@@ -17,6 +17,7 @@ if (!isset($_SESSION['userid'])) {//if the user id is not set
     if (isset($_POST['delete'])) {//if they are deleteing an appoitment
         try {
             if (cancel_booking(dbconnect_insert(), $_POST['booking_id'])) {//it will call function to cancel appoinmet
+                auditor(dbconnect_insert(),$_SESSION['userid'],"log", "user has cancelled a ticket". $_SESSION['userid']);//audits that the user has cancelled
                 $_SESSION['message'] = "appointment has been cancelled.";// send message to print saying its been cancelled
             } else {
                 $_SESSION['message'] = "appointment could not be cancelled.";//prints that the appoiment could not be cancled if there is an issue

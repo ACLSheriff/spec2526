@@ -29,6 +29,7 @@ elseif($_SERVER["REQUEST_METHOD"] == "POST"){
         } else {
             if (ticket_update(dbconnect_insert(), $epoch_date, $_POST['ticket_select'], $_POST['amount'])) {//trys to commit the booking
                 $_SESSION["usermessage"] = "SUCCESS: your booking has been confirmed";// will send user a message confirming
+                auditor(dbconnect_insert(),$_SESSION['userid'],"log", "user has changed a ticket". $_SESSION['userid']);//audits that the user has changed a
                 header("Location: bookings.php");//sends user to see there bookings
                 exit;
             } else {

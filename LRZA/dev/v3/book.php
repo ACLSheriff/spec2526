@@ -35,6 +35,7 @@ elseif($_SERVER["REQUEST_METHOD"] == "POST"){
             }else {
                 if (commit_booking(dbconnect_insert(), $epoch, $_POST['ticket_select'], $_SESSION["userid"], $disc_code, $_POST['amount'])) {//trys to commit the booking
                     $_SESSION["usermessage"] = "SUCCESS: your booking has been confirmed";// will send user a message confirming
+                    auditor(dbconnect_insert(),$_SESSION['userid'],"log", "user has booked a ticket". $_SESSION['userid']);//audits that the user has done in the system
                     header("Location: bookings.php");//sends user to see there bookings
                     exit;
                 } else {
