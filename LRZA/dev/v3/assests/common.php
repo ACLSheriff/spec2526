@@ -148,8 +148,12 @@ function check_avalible($conn, $amount, $epoch_date, $ticket_id)
 
     $sql = "SELECT quantity FROM ticket WHERE ticket_id = ?";
 
+    $stmt = $conn->prepare($sql);//prepares SQL statment
+
+    $stmt->bindValue(1,$ticket_id);//binds value
+
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);;
-    $available = $result['quantity'];
+    $available = $result;
 
 
     $avalible_return = false;
@@ -162,7 +166,7 @@ function check_avalible($conn, $amount, $epoch_date, $ticket_id)
         $stmt = $conn->prepare($sql);//prepares SQL statment
 
         $stmt->bindValue(1,$ticket_id);//binds value
-        $stmt->bindValue(1,$epoch_date);//binds value
+        $stmt->bindValue(2,$epoch_date);//binds value
 
         $stmt->execute(); //run the query to insert
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);

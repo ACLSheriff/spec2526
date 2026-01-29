@@ -61,7 +61,7 @@ echo "<div class='content'>";// this class is a box that i can put content for m
 
 echo "<h2> Change booking </h2>";//heading
 
-$booking = fetch_ticket(dbconnect_insert(), $_SESSION["bookingid"]);//gets the appoimnet id and stores in veriable
+$booking = fetch_ticket(dbconnect_insert(), $_SESSION["booking_id"]);//gets the appoimnet id and stores in veriable
 
 echo "<br>";// breaks for readability
 echo "<form method='post' action=''>"; //this creates the form

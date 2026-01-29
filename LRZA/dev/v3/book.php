@@ -16,19 +16,20 @@ elseif($_SERVER["REQUEST_METHOD"] == "POST"){
 //this should be here so if there is a use of headers it can be done so the rest of teh code dosnt load so teh headers will work and change page without errors becuse the header has loaded
 
     try {
-        $tmp = $_POST["date"] ;//cobines it into a single string with a sigle dat and time
-        $epoch_time = strtotime($tmp);//converting to epoc time this passing of the veribale is best practice and minimises issues
+        $epoch = strtotime($_POST['date']);//converting to epoc time this passing of the veribale is best practice and minimises issues
         $disc_code = ticket_discount(dbconnect_insert(), $_POST['discount_code']);
         if (!$disc_code) {
             $_SESSION["usermessage"] = "ERROR: discount not valid";
             header("Location: book.php");
+            exit;
         }else{
-            $avaliblity = check_avalible(dbconnect_insert(), $_POST['amount'], $epoch_time, $_POST['ticket_id']);
+            $avaliblity = check_avalible(dbconnect_insert(), $_POST['amount'], $epoch, $_POST['ticket_select']);
             if (!$avaliblity) {
                 $_SESSION["usermessage"] = "ERROR: avaliblity not valid";
-                header("Location: book.php");
+                header("Location:book.php");
+                exit;
             }else {
-                if (commit_booking(dbconnect_insert(), $epoch_time, $_POST['ticket_select'], $_SESSION["userid"], $disc_code, $_POST['amount'])) {//trys to commit the booking
+                if (commit_booking(dbconnect_insert(), $epoch, $_POST['ticket_select'], $_SESSION["userid"], $disc_code, $_POST['amount'])) {//trys to commit the booking
                     $_SESSION["usermessage"] = "SUCCESS: your booking has been confirmed";// will send user a message confirming
                     header("Location: bookings.php");//sends user to see there bookings
                     exit;
@@ -84,7 +85,7 @@ if(!$ticket){
     echo "<select name='ticket_select'>";
     foreach ($ticket as $tickets) {
         echo "<option value=" . $tickets['ticket_id'] . ">". "type: " . $tickets['type'] . "   price: £" . $tickets['price'] . "</option>";
-        echo $tickets['ticket_id'];
+
     }
 
     echo "</select>";
@@ -98,10 +99,9 @@ echo "<br>";
 
 
 
-echo "<layble for='date'> Appointment date:</lable>";//allows user to input the appointment date
-echo "<input type='date' name='appt_date' required>";
+echo "<layble for='date'> date:</lable>";//allows user to input the appointment date
+echo "<input type='date' name='date' required>";
 echo "<br>";
-
 
 
 echo "<input type='text' name='discount_code' placeholder='discount code' </input>";

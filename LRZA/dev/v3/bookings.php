@@ -27,7 +27,7 @@ if (!isset($_SESSION['userid'])) {//if the user id is not set
             $_SESSION['message'] = "ERROR: " . $e->getMessage();
         }
     }elseif(isset($_POST['change'])){//if they want to change the appoimnet
-        $_SESSION['apptid'] = $_POST['bookingid'];//puts the appointment id in post
+        $_SESSION['bookingid'] = $_POST['bookingid'];//puts the appointment id in post
         header("location:change_ticket.php");//sends the user to the change booking page
         exit;//exits page
     }
@@ -71,7 +71,7 @@ if(!$tickets){//if there are no appoiments it will tell the user
         echo "<tr>";
         echo "<td> Date:" . date('M d, Y ', $ticket['date']) . "</td>";//using a built in fuction and telling it what format our epoch time should go in for when the apt is
         echo "<td> type: " . $ticket['type'] . "</td>";//will show the docters surname
-        echo "<td> overall price: " . $price . "</td>";
+        echo "<td> overall price: £" . $price . "</td>";
         echo "<td> amount: " . $ticket['amount'] . "</td>";
         echo "<td><input type='hidden' name='bookingid' value='" . $ticket['booking_id'] . "'>
         <input type='submit' name='delete' value='cancel ticket' />
