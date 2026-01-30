@@ -16,7 +16,7 @@ if (!isset($_SESSION['userid'])) {//if the user id is not set
 //this should be here so if there is a use of headers it can be done so the rest of teh code dosnt load so teh headers will work and change page without errors becuse the header has loaded
     if (isset($_POST['delete'])) {//if they are deleteing an appoitment
         try {
-            if (cancel_booking(dbconnect_insert(), $_POST['booking_id'])) {//it will call function to cancel appoinmet
+            if (cancel_booking(dbconnect_insert(), $_POST['booking_id'])) {//it will call function to cancel booking
                 auditor(dbconnect_insert(),$_SESSION['userid'],"log", "user has cancelled a ticket". $_SESSION['userid']);//audits that the user has cancelled
                 $_SESSION['message'] = "appointment has been cancelled.";// send message to print saying its been cancelled
             } else {
@@ -57,9 +57,9 @@ echo "<br>";
 echo user_message();//calls the function
 echo "<br>";
 
-$tickets = bookings_getter(dbconnect_insert());//getting appoiments from database
-if(!$tickets){//if there are no appoiments it will tell the user
-    echo "no bookings found";
+$tickets = bookings_getter(dbconnect_insert());//getting the bookings they have from database
+if(!$tickets){//if there are no tickets it will tell the user
+    echo "no bookings found";// if they have no bookings this will be printed
 }else{
 
     echo "<table id='bookings'>";//starts a table for bookings
@@ -74,6 +74,8 @@ if(!$tickets){//if there are no appoiments it will tell the user
         echo "<td> type: " . $ticket['type'] . "</td>";//will show the docters surname
         echo "<td> overall price: £" . $price . "</td>";
         echo "<td> amount: " . $ticket['amount'] . "</td>";
+        //this next lines hide the booking id of that booking the user made but it means when the user sumbits or changes anything we can use teh booking id to identigy the booking
+        //after we have got submit buttons if they press will submit that tickets info and will carry out the action intedx by the button
         echo "<td><input type='hidden' name='booking_id' value='" . $ticket['booking_id'] . "'>
         <input type='submit' name='delete' value='cancel ticket' />
         <input type='submit' name='change' value='change ticket'/></td>";//set the value without needed to input, allows user to submit and change

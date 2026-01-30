@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//checking a super globle to see if t
             $_SESSION['usermessage'] = "ERROR USER REG FAILED ";//catches any other errors that occer and formatt and  outputs them
         }
     } catch (PDOException $e) {
-        $_SESSION['usermessage'] = "ERROR USER REG FAILED ". $e->getMessage();
+        $_SESSION['usermessage'] = "ERROR USER REG FAILED ". $e->getMessage();// catches any other errors from the try catch so the page dosnt catch and shows an error message
     }
 
     catch (Exception $e) {
@@ -82,7 +82,7 @@ echo "<h3>We use the details you provide to create and manage your account, veri
 services. </h3>";
 echo "<table>";//starts a table
 echo "<ul>";//bullit points the list
-//these are all items in the list
+//these are all items in the list this list is stating how all users data is being used
 echo "<li> Username & Password: For secure login. </li>";//items in list
 echo "<li> Name: To personalise communication. </li>";
 echo "<li> Date of Birth: To confirm eligibility and protect account security. </li>";

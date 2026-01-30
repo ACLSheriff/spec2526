@@ -163,13 +163,13 @@ function check_avalible($conn, $amount, $epoch_date, $ticket_id)
 {
 
 
-    $sql = "SELECT quantity FROM ticket WHERE ticket_id = ?";
+    $sql = "SELECT quantity FROM ticket WHERE ticket_id = ?";// this gets the quanity of tickets avalible for the ticket type they selected which is a set amount each day
 
     $stmt = $conn->prepare($sql);//prepares SQL statment
 
     $stmt->bindValue(1,$ticket_id);//binds value
 
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);;
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);;// exicutes and featches deatils
     $available = $result;
 
 
@@ -190,16 +190,16 @@ function check_avalible($conn, $amount, $epoch_date, $ticket_id)
         $conn = null;  // close the connection so cant be abused
 
         if(!$result){
-            if($available >= $amount){
-                $avalible_return = true;
-            } elseif($available < $amount){
+            if($available >= $amount){//if the amount valible if greater then the amount they want
+                $avalible_return = true;//allow them to book
+            } elseif($available < $amount){//if the amount is less then the amount they want then that is not avalible to book
                 $avalible_return = false;
             }
 
         } else {
             $totalsold = $amount;
-            foreach ($result as $sold){
-                $totalsold= $totalsold+$sold['amount'];
+            foreach ($result as $sold){//for each amount sold
+                $totalsold= $totalsold+$sold['amount'];//
             }
             if($totalsold <= $available){
                 $avalible_return = true;

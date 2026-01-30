@@ -21,7 +21,7 @@ elseif ($_SERVER["REQUEST_METHOD"] === "POST") {//verifys the function
         if($usr && password_verify($fpassword,$usr['password'])){// checking the username and password match and is present
             $_SESSION['userid'] = $usr["user_id"];//sets and store user id
             $_SESSION['usermessage'] = "SUCCESSFULLY LOGGED IN";//success message
-            auditor(dbconnect_insert(),$_SESSION['userid'],"log", "user has successfully logged in". $_SESSION['userid']);
+            auditor(dbconnect_insert(),$_SESSION['userid'],"log", "user has successfully logged in". $_SESSION['userid']);//this sudits a user has logged into the system so we know user activitys
             header("location:index.php");//send back to home page
             exit;//exits page ends code
         }elseif (!$usr){
@@ -34,7 +34,7 @@ elseif ($_SERVER["REQUEST_METHOD"] === "POST") {//verifys the function
             exit;//ends code
         }
     } catch (PDOException $e) {
-        $_SESSION['usermessage'] = "ERROR USER LOG IN FAILED ". $e->getMessage();
+        $_SESSION['usermessage'] = "ERROR USER LOG IN FAILED ". $e->getMessage();// if a error occures in the try statment then the error wont crash the page and will show error message
     }
 
     catch (Exception $e) {

@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//checking a super globle to see if t
         } else {
             $_SESSION['usermessage'] = "ERROR USER REG FAILED ";//catches any other errors that occer and formatt and  outputs them
         }
-    } catch (PDOException $e) {
+    } catch (PDOException $e) {// this catches any expectpns if the try dosnet work this means the code wont crash and will just have an error message
         $_SESSION['usermessage'] = "ERROR USER REG FAILED ". $e->getMessage();
     }
 

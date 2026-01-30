@@ -83,14 +83,16 @@ try {
 }
 
 
-if(!$ticket){
-    echo "no tickets available!";
-} else {
 
-    echo "<select name='ticket_select'>";
-    foreach ($ticket as $tickets) {
+if(!$ticket){//if there are no tickets it will tell the user
+    echo "no bookings found";// if they have no bookings this will be printed
+}else{
+
+
+    echo "<select name='ticket_select'>";//allows a select box
+    foreach ($ticket as $tickets) {// for each of the records of the ticket details and type they are
         echo "<option value=" . $tickets['ticket_id'] . ">". "type: " . $tickets['type'] . "   price: £" . $tickets['price'] . "</option>";
-
+//it will show this infomation and for that ticket id which if called we are able to idetify ticket types by id to add and user can select based on type and price
     }
 
     echo "</select>";
@@ -98,18 +100,18 @@ if(!$ticket){
 
 echo "<br>";
 
-echo "<input type='number' name='amount' placeholder='amount of ticket' </input>";
+echo "<input type='number' name='amount' placeholder='amount of ticket' </input>";// alows a user to enter in the number amout of tickets they want and will only allow a number input for robustness
 
 echo "<br>";
 
 
 
-echo "<layble for='date'> date:</lable>";//allows user to input the appointment date
+echo "<layble for='date'> date:</lable>";//allows user to input the date they want to look at
 echo "<input type='date' name='date' required>";
 echo "<br>";
 
 
-echo "<input type='text' name='discount_code' placeholder='discount code' </input>";
+echo "<input type='text' name='discount_code' placeholder='discount code' </input>";// a text box so if a user dose know a discount code they are able to enter in the code and if correct it will be applied
 echo "<br>";
 
 //echo "<td><input type='hidden' name='ticket_id' value=".$tickets['ticket_id'].">";

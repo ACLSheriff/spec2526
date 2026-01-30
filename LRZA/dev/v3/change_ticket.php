@@ -16,16 +16,16 @@ if (!isset($_SESSION['userid'])) {//if the user id is not set stops them accessi
 elseif($_SERVER["REQUEST_METHOD"] == "POST"){
 //this should be here so if there is a use of headers it can be done so the rest of teh code dosnt load so teh headers will work and change page without errors becuse the header has loaded
 
-    $_POST['amount'] = htmlspecialchars($_POST['amount'], ENT_QUOTES, 'UTF-8');
+    $_POST['amount'] = htmlspecialchars($_POST['amount'], ENT_QUOTES, 'UTF-8');//this filters out any malius inputs to make sure system is ecure
     $_POST['discount_code'] = htmlspecialchars($_POST['discount_code'], ENT_QUOTES, 'UTF-8');
 
     try {
         $tmp = $_POST["date"];//cobines it into a single string with a sigle dat and time
         $epoch_date = strtotime($tmp);//converting to epoc time this passing of the veribale is best practice and minimises issues
-        $avaliblity = check_avalible(dbconnect_insert(), $_POST['amount'], $epoch_date, $_POST['ticket_id']);
-        if (!$avaliblity) {
-            $_SESSION["usermessage"] = "ERROR: avaliblity not valid";
-            header("Location: book.php");
+        $avaliblity = check_avalible(dbconnect_insert(), $_POST['amount'], $epoch_date, $_POST['ticket_id']);//this gose into the datatbase and checks if there are tickets left that are avlible to book and enough for the amount they want
+        if (!$avaliblity) {//if there isnt avalibity to book tickets
+            $_SESSION["usermessage"] = "ERROR: avaliblity not valid";//error message
+            header("Location: book.php");// users will then have the page reloaded so they can try re book
         } else {
             if (ticket_update(dbconnect_insert(), $epoch_date, $_POST['ticket_select'], $_POST['amount'])) {//trys to commit the booking
                 $_SESSION["usermessage"] = "SUCCESS: your booking has been confirmed";// will send user a message confirming
@@ -81,30 +81,31 @@ echo "<br>";// breaks for readability
 echo "<form method='post' action=''>"; //this creates the form
 
 try {
-    $ticket = ticket_getter(dbconnect_insert());//gets the staff from the database
+    $ticket = ticket_getter(dbconnect_insert());//gets the types of tickets from the database
 }catch (PDOException $e){
-    $_SESSION["usermessage"] = "ERROR: something went wrong";
+    $_SESSION["usermessage"] = "ERROR: something went wrong";// if an error occures getting the tickets an error will be printed and wont crash
 }
 
 
-if(!$ticket){
-    echo "no tickets available!";
+if(!$ticket){//if there are no tickets
+    echo "no tickets available!";// it will tell the user there are non avalibe
 } else {
 
     echo "<select name='ticket_select'>";
-    foreach ($ticket as $tickets) {
+    foreach ($ticket as $tickets) {//for each of the tickets we have got in the database we go down each record and store that record in tickets
         echo "<option value=" . $tickets['ticket_id'] . ">". "type: " . $tickets['type'] . "   price: £" . $tickets['price'] . "</option>";
-        echo $tickets['ticket_id'];
+        //it then formats the ticket details to be printed to user so user can pick a ticket and see teh type and price of each
+
     }
 
-    echo "</select>";
+    echo "</select>";//allows user to select an option
 }
 
 echo "<br>";
 
 
 echo "<layble for='amount'> amount:</lable>";//shows appoimnet date
-echo "<input type='number' name='amount' value='".$booking["amount"]."' required>";
+echo "<input type='number' name='amount' value='".$booking["amount"]."' required>";//allows user to input an amout of tickets they want and it also has to be a number data type making it more secure to incorrect inputs
 
 echo "<br>";
 
