@@ -142,15 +142,25 @@ function get_users($conn, $house_id)
     }
 
 
+function get_all_users($conn)
+{
+    $sql = "SELECT * FROM users ";
+    $stmt = $conn->prepare($sql);
+
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $conn = null;
+    return $result;
+}
 
 
 
-function remove_house($conn, $aptid)
+function remove_house($conn, $houseid)
 {
     $sql = "DELETE FROM house WHERE house_id = ?";//this deltes the booking the user selected from the database
     $stmt = $conn->prepare($sql);//prepares SQL statment
 
-    $stmt->bindValue(1,$aptid);// finds the user id and binds to value
+    $stmt->bindValue(1,$houseid);// finds the user id and binds to value
 
     $stmt->execute(); //run the query to insert
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);//

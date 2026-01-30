@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {//verifys the function
 
     if (isset($_POST['add_user'])) {//if they are deleteing an appoitment
         try {
-            if (add_user(dbconnect_insert(), $_POST['house_id'], $_POST['role'], $_POST['longdesc'], $user['user_select'])) {//it will call function to cancel appoinmet
+            if (add_user(dbconnect_insert(), $_POST['house_id'], $_POST['role'], $_POST['longdesc'], $_POST['user_select'])) {//it will call function to cancel appoinmet
                 $_SESSION['message'] = "appointment has been cancelled.";// send message to print saying its been cancelled
             } else {
                 $_SESSION['message'] = "appointment could not be cancelled.";//prints that the appoiment could not be cancled if there is an issue
@@ -49,8 +49,13 @@ echo "<div class='content'>";// this class is a box that i can put content for m
 
 echo "<h2> Your profile </h2>";//heading
 
-$details = house_getter(dbconnect_insert(), $_SESSION['userid']);
-
+try {
+    $details = house_getter(dbconnect_insert(), $_SESSION['userid']);
+} catch (PDOException $e) {
+    $_SESSION['message'] = "ERROR: " . $e->getMessage();//catches an other errors that occur
+} catch (Exception $e) {
+    $_SESSION['message'] = "ERROR: " . $e->getMessage();
+}
 
 echo "<p> details </p>";
 echo "<br>";// breaks for readability
@@ -72,14 +77,14 @@ echo "<tr>";
 echo "<td> Date added:" . $detail['reg_date'] . "</td>";//showing users when the house was registered with a premade format ( if epoch time i would formatt this but not formatting as stored as date
 echo "<td> your previlages: " . $role . " </td>";//will show the users role for that house
 echo "<td> address: " . $detail['address'] . "</td>";//show house address
-echo "<td><input type='hidden' name='appid' value='" . $detail['house_id'] . "'>;
+echo "<td><input type='hidden' name='house_id' value='" . $detail['house_id'] . "'>;
 
     <input type='submit' name='add_room' value='add room' />
     <input type='submit' name='veiw_rooms' value='veiw rooms'</td>";
 
 if ($detail['role'] == "owner") {
     echo "<tr>";
-    $users = get_users(dbconnect_insert(), $_SESSION['house_id']);
+    $users = get_users(dbconnect_insert());
         if(!$details){
             echo "no users available!";
         } else {

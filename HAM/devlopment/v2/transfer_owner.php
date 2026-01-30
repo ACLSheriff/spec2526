@@ -56,25 +56,10 @@ echo "<div class='content'>";// this class is a box that i can put content for m
 
 echo "<h2> Change booking </h2>";//heading
 
-$appt = fetch_appt(dbconnect_insert(), $_SESSION["apptid"]);//gets the appoimnet id and stores in veriable
-
 echo "<br>";// breaks for readability
 echo "<form method='post' action=''>"; //this creates the form
 
-$staff = staff_getter(dbconnect_insert());//gets the staff
-
-$apt_time = date('H:i', $appt['aptdate']);//formatts the epoc time they origonly had
-$apt_date = date('Y-m-d', $appt['aptdate']);//formatts the epoc date they had
-
-echo "<layble for='appt_time'> Appointment time:</lable>";//shows the appoimnet time
-echo "<input type='time' name='appt_time'  value='".$apt_time."' required>";//pulled in data from database and showing user what they have picked
-echo "<br>";
-
-
-echo "<layble for='appt_date'> Appointment date:</lable>";//shows appoimnet date
-echo "<input type='date' name='appt_date'value='".$apt_date."' required>";//pulls from database showing the user what date they picked
-echo "<br>";
-echo "<select name='staff'>";//allows user to see and select staff
+$users = staff_getter(dbconnect_insert());//gets the staff
 
 foreach ($staff as $staf){//gose throgh each staff getting there role of docter or nurse
     if($staf["role"] == "doc"){

@@ -16,7 +16,7 @@ if (!isset($_SESSION['userid'])) {//if the user id is not set
 //this should be here so if there is a use of headers it can be done so the rest of teh code dosnt load so teh headers will work and change page without errors becuse the header has loaded
     if (isset($_POST['remove_house'])) {//if they are deleteing an appoitment
         try {
-            if (remove_house(dbconnect_insert(), $_POST['house_id'])) {//it will call function to cancel appoinmet
+            if (remove_house(dbconnect_insert(), $_SESSION['house_id'])) {//it will call function to cancel appoinmet
                 $_SESSION['message'] = "appointment has been cancelled.";// send message to print saying its been cancelled
             } else {
                 $_SESSION['message'] = "appointment could not be cancelled.";//prints that the appoiment could not be cancled if there is an issue
@@ -27,7 +27,7 @@ if (!isset($_SESSION['userid'])) {//if the user id is not set
             $_SESSION['message'] = "ERROR: " . $e->getMessage();
         }
     }elseif(isset($_POST['transfer_house'])){//if they want to change the appoimnet
-        header("location:change_booking.php");//sends the user to the change booking page
+        header("location:transfer_owner.php");//sends the user to the change booking page
         exit;//exits page
     }elseif (isset($_POST['mange_house'])) {
         header("location:mange_house.php");
@@ -83,7 +83,7 @@ if(!$houses){//if there are no appoiments it will tell the user
         echo "<br>";
         echo "<td> address: " . $house['address'] . "</td>";//show house address
         echo "<br>";
-        echo "<td><input type='hidden' name='appid' value='" . $house['house_id'] . "'></td>";
+        echo "<td><input type='hidden' name='house_id' value='" . $house['house_id'] . "'></td>";
         if ($house['role'] == "owner"){
         echo "<tr>";
         echo "<td><input type='submit' name='remove_house' value='remove house' />
