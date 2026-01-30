@@ -6,7 +6,7 @@ require_once "assests/dbconnect.php";
 require_once "assests/common.php";
 
 
-if (!isset($_SESSION['userid'])) {//if the user id is not set
+if (!isset($_SESSION['user_id'])) {//if the user id is not set
     $_SESSION['usermessage'] = "you are not logged in";///checks if user is already logged in and will return message if so
     unset($_SESSION['appid']);//unsets the appitmnet id
     header("location:index.php");//returns to home page
@@ -30,6 +30,7 @@ if (!isset($_SESSION['userid'])) {//if the user id is not set
         header("location:transfer_owner.php");//sends the user to the change booking page
         exit;//exits page
     }elseif (isset($_POST['mange_house'])) {
+        $_SESSION['house_id'] = $_POST['house_id'];
         header("location:mange_house.php");
         exit;
     }
@@ -58,7 +59,7 @@ echo "<br>";
 echo user_message();//calls the function
 echo "<br>";
 
-$houses = house_getter(dbconnect_insert(), $_SESSION['userid']);//getting appoiments from databas
+$houses = house_getter(dbconnect_insert(),$_SESSION['user_id']);//getting appoiments from databas
 if(!$houses){//if there are no appoiments it will tell the user
     echo "no houses found";
 }else{

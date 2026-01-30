@@ -5,7 +5,7 @@ session_start();
 require_once "assests/dbconnect.php";
 require_once "assests/common.php";
 
-if (isset($_SESSION['userid'])) {//checks if the user id is not set already if it is they are already logged in
+if (isset($_SESSION['user_id'])) {//checks if the user id is not set already if it is they are already logged in
     $_SESSION['usermessage'] = "you are already logged in";///checks if user is already logged in and will return message if so
     header("location:index.php");//returns to home page
     exit;//stop further exicution
@@ -19,7 +19,7 @@ elseif ($_SERVER["REQUEST_METHOD"] === "POST") {//verifys the function
         $usr = login(dbconnect_insert(),$_POST);//calls login fuction
 
         if($usr && password_verify($fpassword,$usr['password'])){// checking the username and password match and is present
-            $_SESSION['userid'] = $usr["user_id"];//sets and store user id
+            $_SESSION['user_id'] = $usr["user_id"];//sets and store user id
             $_SESSION['usermessage'] = "SUCCESSFULLY LOGGED IN";//success message
             header("location:index.php");//send back to home page
             exit;//exits page ends code

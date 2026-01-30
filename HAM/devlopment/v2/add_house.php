@@ -6,7 +6,7 @@ require_once "assests/dbconnect.php";
 require_once "assests/common.php";
 
 
-if (!isset($_SESSION['userid'])) {//if the user id is not set
+if (!isset($_SESSION['user_id'])) {//if the user id is not set
     $_SESSION['usermessage'] = "you are not logged in";///checks if user is already logged in and will return message if so
     header("location:index.php");//returns to home page
     exit;//stop further exicution

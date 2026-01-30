@@ -50,7 +50,7 @@ echo "<div class='content'>";// this class is a box that i can put content for m
 echo "<h2> Your profile </h2>";//heading
 
 try {
-    $details = house_getter(dbconnect_insert(), $_SESSION['house_id']);
+    $details = house_for_user_getter(dbconnect_insert(), $_SESSION['house_id'], $_SESSION['user_id']);
 } catch (PDOException $e) {
     $_SESSION['message'] = "ERROR: " . $e->getMessage();//catches an other errors that occur
 } catch (Exception $e) {
@@ -71,8 +71,6 @@ echo "<form method='post' action=''>"; //this creates the form
         }
         echo "<p> users role: ".$role." description: ". $detail["longdesc"]."</p>";
     }
-
-
 
 echo "<tr>";
 echo "<td> Date added:" . $detail['reg_date'] . "</td>";//showing users when the house was registered with a premade format ( if epoch time i would formatt this but not formatting as stored as date
