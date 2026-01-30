@@ -111,14 +111,15 @@ function add_house_reg($conn, $userid, $house_id)
 }
 
 
-function house_getter($conn, $user_id)
+function house_getter($conn, $house_id, $user_id)
 {
-    $sql = "SELECT v.house_id, v.role, v.longdesc, h.reg_date, h.address, h.street FROM veiws v JOIN house h ON v.house_id = h.house_id WHERE v.user_id = ? ORDER BY h.house_id ASC";
+    $sql = "SELECT v.role, v.longdesc, h.reg_date, h.address, h.street FROM veiws v JOIN house h ON v.house_id = h.house_id WHERE v.house_id = ? WHERE v.user_id = ?";
     // selects the feils from the diffrent tables, it gets them from the bookings table which we have labled b and joins the docters table with have labled s
     // and use staff id to link together from each table, where it has the user id that that is being used and this will be pulled and orderd by the appiment date in asending order
     $stmt = $conn->prepare($sql);//prepares the SQL stament
 
-    $stmt->bindValue(1, $_SESSION['userid']);//binds value
+    $stmt->bindValue(1, $house_id);//binds value
+    $stmt->bindValue(2, $user_id);
 
     $stmt->execute(); //run the query to insert
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);//featches all the results
@@ -130,19 +131,8 @@ function house_getter($conn, $user_id)
     }
 }
 
-function get_users($conn, $house_id)
-    {
-        $sql = "SELECT * FROM users WHERE house_id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bindValue(1, $house_id);
-        $stmt->execute();
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $conn = null;
-        return $result;
-    }
 
-
-function get_all_users($conn)
+function get_users($conn)
 {
     $sql = "SELECT * FROM users ";
     $stmt = $conn->prepare($sql);
