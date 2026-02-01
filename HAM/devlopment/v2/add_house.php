@@ -21,7 +21,7 @@ elseif($_SERVER["REQUEST_METHOD"] == "POST"){
             $house_id = get_house_id(dbconnect_insert());
             echo "house id ".$house_id."<br>";
             //$userid = $_SESSION['userid'];
-            if (add_house_reg(dbconnect_insert(), $_SESSION['userid'] , $house_id)) {//trys to commit the house
+            if (add_house_reg(dbconnect_insert(), $_SESSION['user_id'] , $house_id)) {//trys to commit the house
                 $_SESSION["usermessage"] = "SUCCESS: your house has been added";// will send user a message confirming
                 header("Location: veiw_house.php");//sends user to see there bookings
                 exit;

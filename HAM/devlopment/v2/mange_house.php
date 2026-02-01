@@ -24,9 +24,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {//verifys the function
        header("location: add_room.php");
        exit;
        }
-    }elseif (isset($_POST['veiw_rooms'])) {
-        header("location:veiw_rooms.php");
-        exit;
+    }elseif (isset($_POST['remove_room'])) {
+        try{
+            if(remove_room(dbconnect_insert(), $_POST['room_id'])) {
+                $_SESSION['message'] = "room has been cancelled.";
+            }else{
+                $_SESSION['message'] = "room could not be cancelled.";
+            }
+        } catch (PDOException $e) {
+            $_SESSION['message'] = "ERROR: " . $e->getMessage();
+        } catch (Exception $e) {
+            $_SESSION['message'] = "ERROR: " . $e->getMessage();
+        }
 
 }
 
@@ -45,9 +54,9 @@ echo "<div class='container'>";//dive alows you to split your page up and class 
 require_once "assests/topbar.php";// gets and displays the top bar
 require_once "assests/navbar.php";// gets and displays nav bar
 
-echo "<div class='content'>";// this class is a box that i can put content for my page into
+echo "<div class='house'>";// this class is a box that i can put content for my page into
 
-echo "<h2> Your profile </h2>";//heading
+echo "<h2> mange houses </h2>";//heading
 
 try {
     $details = house_for_user_getter(dbconnect_insert(), $_SESSION['house_id'], $_SESSION['user_id']);
@@ -72,36 +81,70 @@ echo "<form method='post' action=''>"; //this creates the form
         echo "<p> users role: ".$role." description: ". $detail["longdesc"]."</p>";
     }
 
+echo "<br>";
+
 echo "<tr>";
 echo "<td> Date added:" . $detail['reg_date'] . "</td>";//showing users when the house was registered with a premade format ( if epoch time i would formatt this but not formatting as stored as date
+echo "<br>";
 echo "<td> your previlages: " . $role . " </td>";//will show the users role for that house
+echo "<br>";
 echo "<td> address: " . $detail['address'] . "</td>";//show house address
-echo "<td><input type='hidden' name='house_id' value='" . $detail['house_id'] . "'>;
+echo "<br>";
+echo "<td><input type='hidden' name='house_id' value='" . $detail['house_id'] . "'</td>";
 
-    <input type='submit' name='add_room' value='add room' />
-    <input type='submit' name='veiw_rooms' value='veiw rooms'</td>";
+
+echo "<br>";
+echo "<br>";
 
 if ($detail['role'] == "owner") {
     echo "<tr>";
     $users = get_users(dbconnect_insert());
-        if(!$details){
+        if(!$users){
             echo "no users available!";
         } else {
             echo "<select name='user_select'>";
             foreach ($users as $user) {
-                echo "<option value=" . $user['user_id'] . ">" . $user['firstname'] . "'>" . $user['surname'] . "</option>";
+                echo "<option value=" . $user['user_id'] . ">" . $user['firstname'] . "  " . $user['surname'] . "</option>";
             }
-
             echo "</select>";
         }
+        echo "<br>";
         echo "<input type='text' name='role' placeholder='role' <input/>";
         echo "<br>";
-        echo "<input type='submit' name='longdesc' placeholder='longdesc' />";//submit button for form
+        echo "<input type='text' name='longdesc' placeholder='longdesc' />";//submit button for form
+        echo "<br>";
 
         echo "<td><input type='submit' name='add_user' value='add a user'</td>";
+        echo "<br>";
+        echo "<br>";
 }
 
+try {
+    echo "<tr>";
+    $rooms = room_getter(dbconnect_insert(), $_SESSION['house_id']);
+    if(!$rooms){
+        echo "no rooms available!";
+    } else {
+        foreach ($rooms as $room) {
+            echo "<option value=" . $room['room_id'] . ">". "room name:" . $room['room_name'] . "  floor:" . $room['floor'] . "</option>";
+            echo "<td><input type='submit' name='remove_room' value='remove room'</td>";
+        }
+
+    }
+    echo "<br>";
+
+    echo "<td><input type='submit' name='add_room' value='add a room'</td>";
+    echo "<br>";
+
+}catch (PDOException $e) {
+    $_SESSION['message'] = "ERROR: " . $e->getMessage();
+}catch (Exception $e) {
+    $_SESSION['message'] = "ERROR: " . $e->getMessage();
+}
+
+
 echo "</form>";//end form
+
 
 echo "<br>";
 echo user_message();//calls the function

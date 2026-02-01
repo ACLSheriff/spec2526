@@ -12,7 +12,7 @@ function dbconnect_insert()// creates fuction
 
     $dbpassword = "";//password for database useraccont
 
-    $dbname = "ham";// database name to connect to
+    $dbname = "Ham";// database name to connect to
 
     try {//attempt this block of code, catching an error
         $conn = new PDO("mysql:host=$servername;port=3306;dbname=$dbname", $dbusername, $dbpassword);//establishing a pdo will connect to any type of data source from one commeand set, we could use my SQLi as well but not as common

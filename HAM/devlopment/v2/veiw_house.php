@@ -17,9 +17,11 @@ if (!isset($_SESSION['user_id'])) {//if the user id is not set
     if (isset($_POST['remove_house'])) {//if they are deleteing an appoitment
         try {
             if (remove_house(dbconnect_insert(), $_SESSION['house_id'])) {//it will call function to cancel appoinmet
-                $_SESSION['message'] = "appointment has been cancelled.";// send message to print saying its been cancelled
+                $_SESSION['message'] = "house has been removed.";// send message to print saying its been cancelled
+                header("location:veiw_houses.php");
+                exit;
             } else {
-                $_SESSION['message'] = "appointment could not be cancelled.";//prints that the appoiment could not be cancled if there is an issue
+                $_SESSION['message'] = "house could not be removed.";//prints that the appoiment could not be cancled if there is an issue
             }
         } catch (PDOException $e) {
             $_SESSION['message'] = "ERROR: " . $e->getMessage();//catches an other errors that occur

@@ -58,27 +58,24 @@ echo "<h2> Change booking </h2>";//heading
 
 echo "<br>";// breaks for readability
 echo "<form method='post' action=''>"; //this creates the form
-
-$users = staff_getter(dbconnect_insert());//gets the staff
-
-foreach ($staff as $staf){//gose throgh each staff getting there role of docter or nurse
-    if($staf["role"] == "doc"){
-        $role = "doctor";
-    }else if ($staf["role"] == "nur"){
-        $role = "nurse";
+echo "<tr>";
+$users = get_users(dbconnect_insert());
+if(!$users){
+    echo "no users available!";
+} else {
+    echo "<select name='user_select'>";
+    foreach ($users as $user) {
+        echo "<option value=" . $user['user_id'] . ">" . $user['firstname'] . "  " . $user['surname'] . "</option>";
     }
-    if($appt['staff_id'] == $staf["staff_id"]){//shows the staff they have selected
-        $selected = "selected";
-    }else{
-        $selected = "";
-    }
-    echo "<option value='".$staf["staff_id"]." '>".$selected." ".$role. " ".$staf["surname"]. " Room ".$staf["room"]."</option>";//formmatts staff details so you can see there surname, and room number
+    echo "</select>";
 }
-echo "</select>";
-
+echo "<br>";
 echo "<br>";
 
-echo "<input type='submit' name='submit' value='Update Appointment'>";//allows user to update appoimnet
+echo "<td><input type='submit' name='transfer_owner' value='add a user'</td>";
+echo "<br>";
+
+
 
 echo "</form>";//end form
 

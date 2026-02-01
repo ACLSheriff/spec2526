@@ -131,8 +131,9 @@ function house_getter($conn, $user_id)
 }
 
 
-function house_for_user_getter($conn, $user_id, $house_id)
+function house_for_user_getter($conn, $house_id, $user_id)
 {
+
     $sql = "SELECT v.role, v.longdesc, h.reg_date, h.address, h.street FROM veiws v JOIN house h ON v.house_id = h.house_id WHERE v.house_id = ? AND v.user_id = ?";
     // selects the feils from the diffrent tables, it gets them from the bookings table which we have labled b and joins the docters table with have labled s
     // and use staff id to link together from each table, where it has the user id that that is being used and this will be pulled and orderd by the appiment date in asending order
@@ -167,7 +168,7 @@ function get_users($conn)
 
 function remove_house($conn, $houseid)
 {
-    $sql = "DELETE FROM house WHERE house_id = ?";//this deltes the booking the user selected from the database
+    $sql = "DELETE * FROM house WHERE house_id = ?";//this deltes the booking the user selected from the database
     $stmt = $conn->prepare($sql);//prepares SQL statment
 
     $stmt->bindValue(1,$houseid);// finds the user id and binds to value
@@ -195,12 +196,11 @@ function add_user($conn, $house_id, $role, $longdesc, $user_id)
 
 function add_room($conn, )
     {
-        $sql = "INSERT INTO veiws (house_id, longdesc, role, user_id) VALUES(?,?,?,?)";
+        $sql = "INSERT INTO rooms (house_id, room_name, floor) VALUES(?,?,?,?)";
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(1, $house_id);
-        $stmt->bindValue(2, $longdesc );
-        $stmt->bindValue(3, $role);
-        $stmt->bindValue(4, $userid);
+        $stmt->bindValue(2, $room_name );
+        $stmt->bindValue(3, $floor);
 
         $stmt->execute();
         $conn = null;
@@ -218,14 +218,23 @@ function remove_room($conn, $room_id)
 
 }
 
-function room_getter($conn, $house_id){
-    $sql = "SELECT * FROM rooms WHERE house_id = ? ORDER BY room_id ASC";
-    $stmt = $conn->prepare($sql);
-    $stmt->bindValue(1,$house_id);
-    $stmt->execute();
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $conn = null;
-    return $result;
+function room_getter($conn, $house_id)
+{
 
+    $sql = "SELECT * FROM rooms WHERE v.house_id = ?";
+    // selects the feils from the diffrent tables, it gets them from the bookings table which we have labled b and joins the docters table with have labled s
+    // and use staff id to link together from each table, where it has the user id that that is being used and this will be pulled and orderd by the appiment date in asending order
+    $stmt = $conn->prepare($sql);//prepares the SQL stament
+
+    $stmt->bindValue(1, $house_id);
+
+
+    $stmt->execute(); //run the query to insert
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);//featches all the results
+    $conn = null;  // close the connection so cant be abused
+    if ($result) {//will check if there is a result
+        return $result;//returns result
+    } else {
+        return false;//otherwise we can return false
+    }
 }
-
