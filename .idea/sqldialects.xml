@@ -4,6 +4,12 @@
     <file url="file://$PROJECT_DIR$/Files/database/med_systemsql.sql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/HAM/devlopment/v2/ham(3).sql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/LRZA/dev/v3/lrza(2).sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/NovMock/development/version_1/rolsa_tech.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/NovMock/development/version_2/rolsa_tech (1).sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/NovMock/development/version_3/rolsa_tech (2).sql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/northpole_inc/v1/northpole_inc.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/template/development/version_1/rolsa_tech.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/template/development/version_2/rolsa_tech (1).sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/template/development/version_3/rolsa_tech (2).sql" dialect="GenericSQL" />
   </component>
 </project>

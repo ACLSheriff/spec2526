@@ -1,0 +1,140 @@
+nav ul {
+    list-style-type: none; /*removed buleit points*/
+    margin: 0; /* removed any defult margins  */
+    padding: 0; /* removes any defult padding*/
+    display: flex; /* makes it stacks across*/
+    justify-content: flex-start; /* stacks across*/
+    background-color: black /*background colour of the page */
+}
+
+nav li:hover{/*sets roll over colour for nav bar*/
+    background-color: darkgreen ;/*changes colour when you hold mouse over items*/
+}
+
+nav li{  /* creates spceing around items in nav bar*/
+    padding: 5px 20px 5px 20px; /* top right and bottem left*/
+}
+
+nav a {
+    color: white; /* color of nav bar text */
+}
+
+.container {
+    display: flex;/*sets displays as flexible*/
+    justify-content: center;/* alines content to center */
+    align-items: center;/*alines items to center*/
+    flex-direction: column;/*displays the defult row to coloum*/
+    background-color: cornsilk;
+}
+.content {
+    display: flex;/*sets displays as flexible*/
+    justify-content: center;/* alines content to center */
+    align-items: center;/*alines items to center*/
+    flex-direction: column;/*displays the defult row to coloum*/
+
+}
+
+h2 {
+    width: 100%;
+    display: flex;
+    justify-content: center;/* alines content to center */
+    align-items: center;/*alines items to center*/
+
+}
+
+.topbar {
+    background-color: darkolivegreen;/*backgrounf and text coulours*/
+    color: black;
+    width: 100%;
+    font-size: xx-large;
+    display: flex;
+    justify-content: center;/* alines content to center */
+    align-items: center;/*alines items to center*/
+
+}
+
+table {
+    display: flex;
+    border: 3px solid black;
+    padding: 5px 20px 5px 20px; /* top right and bottem left*/
+    outline: darkolivegreen;
+}
+
+td{
+    border:1px solid darkolivegreen;
+    padding: 5px 20px 5px 20px; /* top right and bottem left*/
+}
+
+
+input[type="submit"] {
+    background-color: lightgrey;
+    border: 2px solid darkolivegreen ;
+}
+input[type="submit"]:hover {
+    background-color: dimgray; /* darker when hovered */
+}
+
+/* Everything inside this wrapper will be styled.
+   Nothing outside this wrapper will be affected. */
+.calc-wrapper {
+    font-family: Arial, sans-serif;
+    background: #f5f6fa;
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+}
+
+.calc-wrapper .calc-container {
+    background: white;
+    padding: 25px;
+    width: 330px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.calc-wrapper h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.calc-wrapper input,
+.calc-wrapper select,
+.calc-wrapper button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.calc-wrapper button {
+    background: #0984e3;
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.calc-wrapper button:hover {
+    background: #74b9ff;
+}
+
+.calc-wrapper .result {
+    margin-top: 20px;
+    padding: 15px;
+    background: #dfe6e9;
+    border-left: 5px solid #00b894;
+    border-radius: 5px;
+}
+
+.calc-wrapper .error {
+    margin-top: 20px;
+    padding: 15px;
+    background: #ffe6e6;
+    border-left: 5px solid #d63031;
+    border-radius: 5px;
+    color: #c0392b;
+}
