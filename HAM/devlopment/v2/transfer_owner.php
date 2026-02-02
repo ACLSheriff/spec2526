@@ -17,16 +17,13 @@ elseif($_SERVER["REQUEST_METHOD"] == "POST"){
 //this should be here so if there is a use of headers it can be done so the rest of teh code dosnt load so teh headers will work and change page without errors becuse the header has loaded
 
     try {
-        $tmp = $_POST["appt_date"] . ' ' . $_POST["appt_time"];//cobines it into a single string with a sigle dat and time
-        $epoch_time = strtotime($tmp);//converting to epoc time this passing of the veribale is best practice and minimises issues
-        if(appt_update(dbconnect_insert(),$_SESSION['apptid'], $epoch_time)){//trys to update appoiment and change in database
-            $_SESSION["usermessage"] = "SUCCESS: your booking has been confirmed";//user message telling them that the appoimnet was changed
-            auditor(dbconnect_insert(),$_SESSION['userid'],"log", "user has changed an appointment". $_SESSION['userid']);//audits that the user has changed an appoimnet
-            header("Location: booking.php");// sends back to booking page
+        if(owner_update(dbconnect_insert(),$_SESSION['user_id'])){//trys to update appoiment and change in database
+            $_SESSION["usermessage"] = "SUCCESS: your booking has been confirmed";//user message telling them
+            header("Location: veiw_house.php");// sends back to booking page
             exit;
         }else{
             $_SESSION["usermessage"] = "ERROR: something went wrong";// error message if it cant be changed
-            header("Location: booking.php");//sends back to booking page
+            header("Location: veiw_house.php");//sends back to booking page
             exit;
         }
 

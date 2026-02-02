@@ -16,7 +16,7 @@ elseif($_SERVER["REQUEST_METHOD"] == "POST"){
 //this should be here so if there is a use of headers it can be done so the rest of teh code dosnt load so teh headers will work and change page without errors becuse the header has loaded
 
     try {
-        if (add_room(dbconnect_insert(), $_SESSION['userid'])) {
+        if (add_room(dbconnect_insert(), $_SESSION['user_id'], $_SESSION[''])) {
                 $_SESSION["usermessage"] = "SUCCESS: your house has been added";// will send user a message confirming
                 header("Location: veiw_rooms.php");//sends user to see there bookings
                 exit;
