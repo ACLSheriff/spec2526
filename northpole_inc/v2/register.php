@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {//checking a super globle to see if t
             if (new_user(dbconnect_insert(), $_POST)) {//commits new user to database
 
                 $_SESSION['usermessage'] = "USER REG SUCCESSFUL";//gives and formats the resutle of the check from common username_check
-                auditor(dbconnect(),getnewuserid(dbconnect(),$_POST['email']),"reg", "Registration of new user");
+                auditor(dbconnect_insert(),getnewuserid(dbconnect_insert(),$_POST['email']),"reg", "Registration of new user");
             } else {
                 $_SESSION['usermessage'] = "ERROR USER REG FAILED1 ";//if its not aviblibe it prints this error message
             }

@@ -20,7 +20,7 @@ elseif ($_SERVER["REQUEST_METHOD"] === "POST") {//verifys the function
 
         if($usr && password_verify($fpassword,$usr['password'])){// checking the username and password match and is present
             $_SESSION['userid'] = $usr["user_id"];//sets and store user id
-            auditor(dbconnect(),$usr["userid"],"LGI", "User has successfully logged in");  // audit logs the login
+            auditor(dbconnect_insert(),$usr["userid"],"LGI", "User has successfully logged in");  // audit logs the login
             $_SESSION['usermessage'] = "SUCCESSFULLY LOGGED IN";//success message
             header("location:index.php");//send back to home page
             exit;//exits page ends code

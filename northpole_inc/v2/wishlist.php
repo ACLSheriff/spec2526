@@ -16,8 +16,8 @@ if (!isset($_SESSION['userid'])) {//if the user id is not set
 //this should be here so if there is a use of headers it can be done so the rest of teh code dosnt load so teh headers will work and change page without errors becuse the header has loaded
     if(isset($_POST['addgift'])){  // if they have clicked to wish for a gift
         try{
-            if(add_wish(dbconnect(), $_POST['gift_select'], $_SESSION["userid"])){  // try to cancel it
-                auditor(dbconnect(), $_SESSION['userid'], "WGT", "Wished for a new gift");  // audit the cancellation
+            if(add_wish(dbconnect_insert(), $_POST['gift_select'], $_SESSION["userid"])){  // try to cancel it
+                auditor(dbconnect_insert(), $_SESSION['userid'], "WGT", "Wished for a new gift");  // audit the cancellation
                 $_SESSION['usermessage'] = "SUCCESS: You have wished for a new gift";  // Sets a user message
                 header('Location: wishlist.php');  // redirects them
                 exit;  // ensures no other code executes
@@ -38,11 +38,11 @@ if (!isset($_SESSION['userid'])) {//if the user id is not set
         }
     } elseif (isset($_POST['giftaddandwish'])) {  // if the change appointment button was used
         try{
-            if(add_gift(dbconnect())){
-                $giftid = get_new_gift(dbconnect());
-                if(add_wish(dbconnect(), $giftid['giftid'], $_SESSION["userid"])){
-                    auditor(dbconnect(),$_SESSION['userid'],"GRG", "Registered a new gift to the system");
-                    auditor(dbconnect(), $_SESSION['userid'], "WGT", "Wished for a new gift");  // audit the cancellation
+            if(add_gift(dbconnect_insert(),$_POST)){
+                $giftid = get_new_gift(dbconnect_insert());
+                if(add_wish(dbconnect_insert(), $giftid['giftid'], $_SESSION["userid"])){
+                    auditor(dbconnect_insert(),$_SESSION['userid'],"GRG", "Registered a new gift to the system");
+                    auditor(dbconnect_insert(), $_SESSION['userid'], "WGT", "Wished for a new gift");  // audit the cancellation
                     $_SESSION['usermessage'] = "SUCCESS: You have wished for a new gift";  // Sets a user message
                     header('Location: wishlist.php');  // redirects them
                     exit;  // ensures no other code executes
@@ -64,8 +64,8 @@ if (!isset($_SESSION['userid'])) {//if the user id is not set
 
     }elseif(isset($_POST['wishdelete'])){
         try{
-            if(remove_wish(dbconnect(),$_POST['wishid'])){
-                auditor(dbconnect(),$_SESSION['userid'],"removeWish", "removed wished item");
+            if(remove_wish(dbconnect_insert(),$_POST['wishid'])){
+                auditor(dbconnect_insert(),$_SESSION['userid'],"removeWish", "removed wished item");
                 $_SESSION['usermessage'] = "SUCCESS: You have removed a wished gift";  // Sets a user message
                 header('Location: wishlist.php');  // redirects them
                 exit;  // ensures no other code executes
