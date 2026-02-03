@@ -85,6 +85,7 @@ if (!isset($_SESSION['userid'])) {//if the user id is not set
         }
     }
 }
+
 echo "<!DOCTYPE html>";//required tag
 echo "<html>";//opens page content
 echo "<head>";//opens the head of the code
