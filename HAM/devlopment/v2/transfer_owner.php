@@ -6,14 +6,8 @@ require_once "assests/dbconnect.php";
 require_once "assests/common.php";
 
 
-if (!isset($_SESSION['userid'])) {//if the user id is not set stops them accessing page for security
-    $_SESSION['usermessage'] = "you are not logged in";///checks if user is already logged in and will return message if so
-    unset($_SESSION['appid']);// usets the appoimnet id
-    header("location:index.php");//returns to home page
-    exit;//stop further exicution
-}
 
-elseif($_SERVER["REQUEST_METHOD"] == "POST"){
+if ($_SERVER["REQUEST_METHOD"] === "POST"){
 //this should be here so if there is a use of headers it can be done so the rest of teh code dosnt load so teh headers will work and change page without errors becuse the header has loaded
 
     try {
@@ -51,7 +45,7 @@ require_once "assests/navbar.php";// gets and displays nav bar
 
 echo "<div class='content'>";// this class is a box that i can put content for my page into
 
-echo "<h2> Change booking </h2>";//heading
+echo "<h2> Change owner </h2>";//heading
 
 echo "<br>";// breaks for readability
 echo "<form method='post' action=''>"; //this creates the form
@@ -69,7 +63,7 @@ if(!$users){
 echo "<br>";
 echo "<br>";
 
-echo "<td><input type='submit' name='transfer_owner' value='add a user'</td>";
+echo "<td><input type='submit' name='transfer_owner' value='transfer'</td>";
 echo "<br>";
 
 

@@ -54,7 +54,7 @@ echo "<div class='container'>";//dive alows you to split your page up and class 
 require_once "assests/topbar.php";// gets and displays the top bar
 require_once "assests/navbar.php";// gets and displays nav bar
 
-echo "<div class='house'>";// this class is a box that i can put content for my page into
+echo "<div class='content'>";// this class is a box that i can put content for my page into
 
 echo "<h2> mange houses </h2>";//heading
 
@@ -90,8 +90,7 @@ echo "<td> your previlages: " . $role . " </td>";//will show the users role for 
 echo "<br>";
 echo "<td> address: " . $detail['address'] . "</td>";//show house address
 echo "<br>";
-echo "<td><input type='hidden' name='house_id' value='" . $detail['house_id'] . "'</td>";
-
+echo "<td><input type='hidden' name='house_id' value='" . $_SESSION['house_id'] . "'</td>";
 
 echo "<br>";
 echo "<br>";
@@ -116,7 +115,7 @@ if ($detail['role'] == "owner") {
 
         echo "<td><input type='submit' name='add_user' value='add a user'</td>";
         echo "<br>";
-        echo "<br>";
+
 }
 
 try {
@@ -129,7 +128,6 @@ try {
             echo "<option value=" . $room['room_id'] . ">". "room name:" . $room['room_name'] . "  floor:" . $room['floor'] . "</option>";
             echo "<td><input type='submit' name='remove_room' value='remove room'</td>";
         }
-
     }
     echo "<br>";
 

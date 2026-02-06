@@ -187,7 +187,7 @@ function add_user($conn, $house_id, $role, $longdesc, $user_id)
     $stmt->bindValue(1, $house_id);
     $stmt->bindValue(2, $longdesc );
     $stmt->bindValue(3, $role);
-    $stmt->bindValue(4, $userid);
+    $stmt->bindValue(4, $user_id);
 
     $stmt->execute();
     $conn = null;

@@ -89,7 +89,7 @@ if(!$houses){//if there are no appoiments it will tell the user
         echo "<td><input type='hidden' name='house_id' value='" . $house['house_id'] . "'></td>";
         if ($house['role'] == "owner"){
         echo "<tr>";
-        echo "<td><input type='submit' name='remove_house' value='remove house' />
+        echo "<td><input type='submit' name='remove_house' value='remove house'/>
         <input type='submit' name='transfer_house' value='transfer house'/>
         <input type='submit' name='mange_house' value='mange house'</td>";
         } else if ($house['role'] == "editing"){
